@@ -115,9 +115,13 @@ const ExploreTopBar = ({
               <DropdownMenuTrigger asChild>
                 <Avatar className="h-10 w-10 border border-border cursor-pointer transition-transform hover:scale-105">
                   <AvatarImage
-                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${
-                      user.name || "User"
-                    }`}
+                    src={
+                      user.prefs?.avatar ||
+                      `https://api.dicebear.com/7.x/initials/svg?seed=${
+                        user.name || "User"
+                      }`
+                    }
+                    className="object-cover"
                   />
                   <AvatarFallback>{user.name?.charAt(0) || "U"}</AvatarFallback>
                 </Avatar>

@@ -100,6 +100,21 @@ export const updateUserPassword = createAsyncThunk(
   }
 );
 
+export const updateUserAvatar = createAsyncThunk(
+  "auth/updateAvatar",
+  async ({ avatarUrl }, { rejectWithValue }) => {
+    try {
+      const user = await account.get();
+      const prefs = user.prefs || {};
+      await account.updatePrefs({ ...prefs, avatar: avatarUrl });
+      const updatedUser = await account.get(); // Get fresh user with new prefs
+      return updatedUser;
+    } catch (error) {
+      return rejectWithValue(error.message || "Failed to update avatar");
+    }
+  }
+);
+
 // Email Verification
 export const sendEmailVerification = createAsyncThunk(
   "auth/sendVerification",
@@ -259,6 +274,18 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(updateUserPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateUserAvatar.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserAvatar.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.message = "Avatar updated successfully!";
+      })
+      .addCase(updateUserAvatar.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

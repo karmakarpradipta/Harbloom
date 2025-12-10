@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   updateUserName,
   updateUserPassword,
+  updateUserAvatar,
   logoutUser,
   sendEmailVerification,
 } from "@/store/slices/authSlice";
@@ -29,6 +30,16 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import { FileUploaderRegular } from "@uploadcare/react-uploader";
+import "@uploadcare/react-uploader/core.css";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 
@@ -101,16 +112,47 @@ const Profile = () => {
             <div className="relative group">
               <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-background dark:border-card shadow-xl ring-2 ring-primary/20">
                 <AvatarImage
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${user?.name}`}
+                  src={
+                    user?.prefs?.avatar ||
+                    `https://api.dicebear.com/7.x/initials/svg?seed=${user?.name}`
+                  }
                   alt={user?.name}
+                  className="object-cover"
                 />
                 <AvatarFallback className="text-4xl">
                   {user?.name?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="absolute bottom-0 right-0 p-1.5 bg-primary text-primary-foreground rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors hidden md:block">
-                <Camera className="h-4 w-4" />
-              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="absolute bottom-0 right-0 p-1.5 bg-primary text-primary-foreground rounded-full shadow-lg cursor-pointer hover:bg-primary/90 transition-colors">
+                    <Camera className="h-4 w-4" />
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="dark:text-foreground">
+                      Upload Avatar
+                    </DialogTitle>
+                    <DialogDescription>
+                      Select an image to upload as your profile picture.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex justify-center p-4">
+                    <FileUploaderRegular
+                      pubkey="8fd62d97f98920880622"
+                      classNameUploader="uc-light uc-purple"
+                      sourceList="local, camera, gdrive"
+                      filesViewMode="grid"
+                      onFileUploadSuccess={(fileInfo) => {
+                        dispatch(
+                          updateUserAvatar({ avatarUrl: fileInfo.cdnUrl })
+                        );
+                      }}
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
             <div className="text-center md:text-left space-y-2">
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground font-serif">
