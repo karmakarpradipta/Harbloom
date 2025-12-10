@@ -1,0 +1,994 @@
+[
+  {
+    "id": "ashwagandha",
+    "commonName": "Ashwagandha",
+    "scientificName": "Withania somnifera",
+    "overview": "A foundational adaptogenic herb in Ayurveda, clinically explored for stress resilience, sleep quality, cognition, inflammation, metabolic health, and musculoskeletal performance.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1515543904379-3d757afe72e3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196911514-cfd8d628b485?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Adaptogenic", "Stress Relief", "Ayurveda", "Immunity", "Neuroprotective"],
+    "introduction": {
+      "description": "A drought-hardy Rasayana shrub used for vitality, longevity, recovery from illness and stress.",
+      "keyBioactives": ["Withaferin A", "Withanolide A", "Withanosides"],
+      "mechanisms": ["HPA axis modulation", "GABAergic signaling", "Inflammatory pathway regulation"]
+    },
+    "habitat": {
+      "nativeRange": "Dry and semi-arid Indian subcontinent, Middle East.",
+      "ecology": "Dry stony or sandy loams; full sun.",
+      "altitude": "Plains to 1600 m.",
+      "climate": "20–35°C; drought tolerant."
+    },
+    "cultivation": {
+      "soil": "Light, well-drained sandy loam.",
+      "planting": { "propagation": "Seeds", "seedRate": "5–12 kg/ha", "spacing": "60 × 60 cm" },
+      "season": "Late monsoon.",
+      "inputs": "Low-input; minimal irrigation.",
+      "varieties": ["Poshita", "Rakshita", "Jawahar-20"],
+      "cropDuration": "150–180 days",
+      "yieldNote": "Root quality improved by proper drying."
+    },
+    "partsUsed": [
+      { "part": "Roots", "uses": "Primary medicinal organ; extracts." },
+      { "part": "Leaves", "uses": "External use, high Withaferin A." }
+    ],
+    "varieties": { "releasedCultivars": ["Poshita", "Rakshita"], "chemotypes": "Root vs Leaf dominance." },
+    "chemicalConstituents": {
+      "withanolides": ["Withaferin A", "Withanolide A"],
+      "others": ["Alkaloids", "Amino acids"],
+      "distributionSummary": "Roots rich in withanolide glycosides."
+    },
+    "medicinalUses": ["Stress reduction", "Cognitive support", "Muscle strength"],
+    "medicinalProperties": ["Adaptogenic", "Anti-inflammatory", "Neurotrophic"],
+    "references": ["Pharmacology reviews", "Clinical trials"]
+  },
+  {
+    "id": "tulsi",
+    "commonName": "Tulsi (Holy Basil)",
+    "scientificName": "Ocimum sanctum",
+    "overview": "Known as the 'Queen of Herbs', Tulsi is revered for its spiritual significance and potent medicinal properties supporting respiratory health and stress response.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1620916297397-a4a5402a3c6c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1589139857948-436f52230fb3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Respiratory", "Adaptogen", "Antiviral", "Antioxidant", "Ayurveda"],
+    "introduction": {
+      "description": "An aromatic perennial shrub widely grown in India for medicinal and religious purposes.",
+      "keyBioactives": ["Eugenol", "Ursolic acid", "Rosmarinic acid"],
+      "mechanisms": ["COX-2 inhibition", "Immunomodulation", "Cortisol regulation"]
+    },
+    "habitat": {
+      "nativeRange": "Indian subcontinent and Southeast Asia.",
+      "ecology": "Tropical and subtropical regions.",
+      "altitude": "Up to 1800 m.",
+      "climate": "Warm and humid; sensitive to frost."
+    },
+    "cultivation": {
+      "soil": "Rich loam to poor laterite; good drainage essential.",
+      "planting": { "propagation": "Seeds or stem cuttings", "seedRate": "200g/ha (nursery)", "spacing": "40 × 40 cm" },
+      "season": "Rainy season or spring.",
+      "inputs": "Moderate organic manure.",
+      "varieties": ["Rama Tulsi", "Krishna Tulsi", "Vana Tulsi"],
+      "cropDuration": "90–120 days for first harvest",
+      "yieldNote": "Herbage yield depends on nitrogen input."
+    },
+    "partsUsed": [
+      { "part": "Leaves", "uses": "Tea, extracts, fresh consumption." },
+      { "part": "Seeds", "uses": "Demulcent, used in deserts (Falooda)." }
+    ],
+    "varieties": { "releasedCultivars": ["CIM-Ayu", "CIM-Angana"], "chemotypes": "Eugenol-rich vs Methyl-eugenol types." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Eugenol", "Carvacrol", "Linalool", "Caryophyllene"],
+      "distributionSummary": "Essential oil concentrated in glandular trichomes of leaves."
+    },
+    "medicinalUses": ["Cough and cold", "Stress resilience", "Blood sugar regulation", "Skin infections"],
+    "medicinalProperties": ["Antimicrobial", "Expectorant", "Radioprotective", "Anti-diabetic"],
+    "references": ["Ayurvedic Pharmacopoeia", "Modern phytotherapy journals"]
+  },
+  {
+    "id": "turmeric",
+    "commonName": "Turmeric",
+    "scientificName": "Curcuma longa",
+    "overview": "The 'Golden Spice' of life, central to cooking and medicine in Asia, famous for its active compound Curcumin and potent anti-inflammatory effects.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596515408544-b0241031c038?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1564486668725-b77290ceb68b?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196913501-c88f28c242c7?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Anti-inflammatory", "Joint Health", "Skin Health", "Spice", "Immunity"],
+    "introduction": {
+      "description": "A rhizomatous herbaceous perennial plant of the ginger family.",
+      "keyBioactives": ["Curcumin", "Demethoxycurcumin", "Turmerone"],
+      "mechanisms": ["NF-kB inhibition", "Cytokine downregulation", "Antioxidant enzyme induction"]
+    },
+    "habitat": {
+      "nativeRange": "Southeast Asia and Indian subcontinent.",
+      "ecology": "Humid tropical forests.",
+      "altitude": "Up to 1500 m.",
+      "climate": "20–30°C; requires heavy rainfall."
+    },
+    "cultivation": {
+      "soil": "Well-drained sandy or clay loam.",
+      "planting": { "propagation": "Rhizomes", "seedRate": "2,500 kg/ha", "spacing": "45 × 15 cm" },
+      "season": "Spring/Early monsoon.",
+      "inputs": "Heavy feeder; requires mulching and organic matter.",
+      "varieties": ["Prabha", "Pratibha", "Roma", "Suvarna"],
+      "cropDuration": "7–9 months",
+      "yieldNote": "Curing (boiling and drying) essential for color and storage."
+    },
+    "partsUsed": [
+      { "part": "Rhizome", "uses": "Dried powder, fresh juice, extraction." },
+      { "part": "Leaves", "uses": "Aromatic wrapping for steaming food." }
+    ],
+    "varieties": { "releasedCultivars": ["IISR Prathibha", "IISR Alleppey Supreme"], "chemotypes": "High curcumin vs high oleoresin." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Curcuminoids", "Sesquiterpenes", "Polysaccharides"],
+      "distributionSummary": "Curcuminoids concentrated in central rhizome."
+    },
+    "medicinalUses": ["Arthritis", "Digestive disorders", "Wound healing", "Skin radiance"],
+    "medicinalProperties": ["Anti-inflammatory", "Antiseptic", "Hepatoprotective", "Carminative"],
+    "references": ["WHO Monographs", "Curcumin research database"]
+  },
+  {
+    "id": "neem",
+    "commonName": "Neem",
+    "scientificName": "Azadirachta indica",
+    "overview": "Often called the 'Village Pharmacy', Neem is a powerful detoxifier and antimicrobial agent used extensively in skin care and organic agriculture.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1628062083547-4f605ad9d66f?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1599812403568-1250268579d4?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1628062083547-4f605ad9d66f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1549495751-224422c54483?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Detox", "Skin Health", "Antimicrobial", "Bitter", "Organic Farming"],
+    "introduction": {
+      "description": "A fast-growing mahogany family tree, evergreen in most environments.",
+      "keyBioactives": ["Azadirachtin", "Nimbin", "Nimbidin"],
+      "mechanisms": ["Bacterial cell wall disruption", "Anti-feedant (insects)", "Blood purification"]
+    },
+    "habitat": {
+      "nativeRange": "India, Myanmar.",
+      "ecology": "Thrives in dry, sub-arid regions.",
+      "altitude": "Lowlands to 700m.",
+      "climate": "High tolerance for heat (up to 49°C)."
+    },
+    "cultivation": {
+      "soil": "Thrives in almost any soil, including rocky and alkaline.",
+      "planting": { "propagation": "Seeds", "seedRate": "N/A (Tree)", "spacing": "5m × 5m" },
+      "season": "Monsoon.",
+      "inputs": "Very low; hardy tree.",
+      "varieties": ["Local ecotypes"],
+      "cropDuration": "Perennial (productive after 3-5 years)",
+      "yieldNote": "Fruit yield peaks in summer."
+    },
+    "partsUsed": [
+      { "part": "Leaves", "uses": "Paste for skin, tea for detox." },
+      { "part": "Bark", "uses": "Dental hygiene (twigs), fever reduction." },
+      { "part": "Seed Oil", "uses": "Pest control, topical anti-fungal." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A - Mostly wild/local"], "chemotypes": "Varying Azadirachtin content." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Limonoids", "Triterpenoids", "Flavonoids"],
+      "distributionSummary": "Seeds highest in Azadirachtin; Leaves in Nimbin."
+    },
+    "medicinalUses": ["Acne and eczema", "Dental health", "Parasitic infections", "Diabetes support"],
+    "medicinalProperties": ["Antibacterial", "Antifungal", "Anthelmintic", "Hypoglycemic"],
+    "references": ["Forestry guides", "Ayurvedic texts"]
+  },
+  {
+    "id": "amla",
+    "commonName": "Amla (Indian Gooseberry)",
+    "scientificName": "Phyllanthus emblica",
+    "overview": "One of the richest natural sources of Vitamin C, Amla is a Rasayana for rejuvenation, hair health, and digestive acidity regulation.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1616787593922-48283a0026e6?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1595855709940-5772370d9a69?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1595855709940-5772370d9a69?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1621257125368-22f3e4933971?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1601633512297-c2576a8dc588?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1635352614828-d710892095f9?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Vitamin C", "Hair Health", "Antioxidant", "Digestion", "Anti-aging"],
+    "introduction": {
+      "description": "A deciduous tree producing sour, spherical, yellowish-green fruits.",
+      "keyBioactives": ["Ascorbic Acid", "Ellagic Acid", "Gallic Acid"],
+      "mechanisms": ["Free radical scavenging", "Collagen synthesis support", "Gastric mucosal protection"]
+    },
+    "habitat": {
+      "nativeRange": "Tropical and subtropical India.",
+      "ecology": "Dry deciduous forests.",
+      "altitude": "Up to 1800m.",
+      "climate": "Tropical; sensitive to young frost."
+    },
+    "cultivation": {
+      "soil": "Light to medium heavy soils; saline tolerant.",
+      "planting": { "propagation": "Budding/Grafting", "seedRate": "N/A", "spacing": "8m × 8m" },
+      "season": "July-August.",
+      "inputs": "Moderate irrigation promotes fruit size.",
+      "varieties": ["Chakaiya", "Banarasi", "NA-7"],
+      "cropDuration": "Perennial (Fruits after 4 years)",
+      "yieldNote": "Prolific bearer."
+    },
+    "partsUsed": [
+      { "part": "Fruit", "uses": "Primary medicinal part; fresh, dried, or candied." }
+    ],
+    "varieties": { "releasedCultivars": ["Kanchan", "Krishna"], "chemotypes": "Variation in Vitamin C stability." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Hydrolyzable tannins", "Vitamin C", "Flavonoids"],
+      "distributionSummary": "Fruit pulp contains the majority of bioactive tannins."
+    },
+    "medicinalUses": ["Hyperacidity", "Hair loss", "Immunity boosting", "Anemia"],
+    "medicinalProperties": ["Antioxidant", "Rejuvenative", "Cytoprotective", "Laxative"],
+    "references": ["Horticulture reviews", "Clinical pharmacology"]
+  },
+  {
+    "id": "brahmi",
+    "commonName": "Brahmi",
+    "scientificName": "Bacopa monnieri",
+    "overview": "A premier 'Medhya Rasayana' (brain tonic), Brahmi is renowned for enhancing memory, learning, and concentration while reducing anxiety.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1579783902614-a3fb39279c0f?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1579783902614-a3fb39279c0f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1628189680373-30588657448e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Memory", "Nootropic", "Focus", "Anxiety", "Brain Health"],
+    "introduction": {
+      "description": "A creeping, succulent herb that grows in wet, marshy areas.",
+      "keyBioactives": ["Bacosides A & B", "Bacolysins"],
+      "mechanisms": ["Dendritic branching enhancement", "Acetylcholine preservation", "Synaptic transmission"]
+    },
+    "habitat": {
+      "nativeRange": "Wetlands of India, Australia, Europe, Africa.",
+      "ecology": "Marshy areas, river banks.",
+      "altitude": "Plains to 1300m.",
+      "climate": "Tropical to subtropical; high water requirement."
+    },
+    "cultivation": {
+      "soil": "Clayey loam, water-logged soil.",
+      "planting": { "propagation": "Stem cuttings", "seedRate": "N/A", "spacing": "10 × 10 cm" },
+      "season": "Spring-Summer.",
+      "inputs": "High water; requires constant moisture.",
+      "varieties": ["CIM-Jagriti", "Subodhak"],
+      "cropDuration": "4-5 months",
+      "yieldNote": "Can be harvested multiple times a year."
+    },
+    "partsUsed": [
+      { "part": "Whole Plant", "uses": "Used fresh in juice or dried in powders/ghritas." }
+    ],
+    "varieties": { "releasedCultivars": ["CIM-Jagriti"], "chemotypes": "Bacoside-rich variants." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Dammarane-type triterpenoid saponins", "Alkaloids"],
+      "distributionSummary": "Whole aerial parts are active."
+    },
+    "medicinalUses": ["Memory loss", "ADHD support", "Insomnia", "Epilepsy (adjunct)"],
+    "medicinalProperties": ["Nootropic", "Sedative", "Anticonvulsant", "Anxiolytic"],
+    "references": ["Neuropharmacology journals", "Ayurvedic texts"]
+  },
+  {
+    "id": "ginger",
+    "commonName": "Ginger",
+    "scientificName": "Zingiber officinale",
+    "overview": "A universal remedy for digestive health and nausea, ginger warms the body and stimulates appetite and circulation.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1615485290341-283195204484?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1634731871270-b78d22384a44?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1615485290341-283195204484?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1557008892-0b4459d81d4e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Digestion", "Nausea", "Anti-inflammatory", "Warming", "Circulation"],
+    "introduction": {
+      "description": "A flowering plant whose rhizome, ginger root, is widely used as a spice and folk medicine.",
+      "keyBioactives": ["Gingerol", "Shogaol", "Zingiberene"],
+      "mechanisms": ["5-HT3 antagonism (anti-nausea)", "COX inhibition", "Gastric emptying acceleration"]
+    },
+    "habitat": {
+      "nativeRange": "Maritime Southeast Asia.",
+      "ecology": "Warm, humid tropics.",
+      "altitude": "Up to 1500m.",
+      "climate": "Requires high humidity and partial shade."
+    },
+    "cultivation": {
+      "soil": "Friable sandy loam rich in humus.",
+      "planting": { "propagation": "Rhizome bits", "seedRate": "1500 kg/ha", "spacing": "30 × 30 cm" },
+      "season": "Spring.",
+      "inputs": "Heavy mulching required.",
+      "varieties": ["Suprabha", "Suruchi", "Himagiri"],
+      "cropDuration": "8-9 months",
+      "yieldNote": "Higher fibre content in delayed harvest."
+    },
+    "partsUsed": [
+      { "part": "Rhizome", "uses": "Fresh (Adrak) or Dried (Sunthi)." }
+    ],
+    "varieties": { "releasedCultivars": ["IISR Varada"], "chemotypes": "High oil vs high oleoresin." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Phenolic compounds", "Sesquiterpenes"],
+      "distributionSummary": "Shogaols increase upon drying/heating."
+    },
+    "medicinalUses": ["Motion sickness", "Indigestion", "Arthritis pain", "Cold and flu"],
+    "medicinalProperties": ["Anti-emetic", "Carminative", "Rubefacient", "Diaphoretic"],
+    "references": ["Gastroenterology research", "Food science reviews"]
+  },
+  {
+    "id": "giloy",
+    "commonName": "Giloy (Guduchi)",
+    "scientificName": "Tinospora cordifolia",
+    "overview": "Known as 'Amrita' (Immortality), Giloy is a supreme immunity booster and fever reducer, extensively used during viral outbreaks.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1628189680373-30588657448e?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1518531933870-1936136286b7?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Immunity", "Fever", "Detox", "Liver Health", "Ayurveda"],
+    "introduction": {
+      "description": "A large, deciduous climbing shrub with heart-shaped leaves.",
+      "keyBioactives": ["Tinosporine", "Berberine", "Giloin"],
+      "mechanisms": ["Macrophage activation", "Cytokine modulation", "Hepatoprotection"]
+    },
+    "habitat": {
+      "nativeRange": "Tropical India, Myanmar, Sri Lanka.",
+      "ecology": "Climbs on large trees (Neem-Giloy is prized).",
+      "altitude": "Up to 300m.",
+      "climate": "Tropical; broad temperature tolerance."
+    },
+    "cultivation": {
+      "soil": "Light medium sandy loam.",
+      "planting": { "propagation": "Stem cuttings", "seedRate": "N/A", "spacing": "2m × 2m" },
+      "season": "May-June.",
+      "inputs": "Support structure (trellis or tree) needed.",
+      "varieties": ["Local wild types"],
+      "cropDuration": "Perennial; harvest after 1 year",
+      "yieldNote": "Mature stems (>1cm diameter) are best."
+    },
+    "partsUsed": [
+      { "part": "Stem", "uses": "Major medicinal part; starch (Satva) extraction." },
+      { "part": "Leaves", "uses": "Minor uses." }
+    ],
+    "varieties": { "releasedCultivars": ["RRL-J"], "chemotypes": "Bitterness varies." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Diterpenoid lactones", "Glycosides", "Alkaloids"],
+      "distributionSummary": "Starch in stem contains immunomodulatory polysaccharides."
+    },
+    "medicinalUses": ["Chronic fever", "Dengue support", "Gout", "Liver toxicity"],
+    "medicinalProperties": ["Antipyretic", "Immunomodulator", "Anti-arthritic", "Hepatoprotective"],
+    "references": ["Immunology journals", "Ayurvedic Pharmacopoeia"]
+  },
+  {
+    "id": "aloe-vera",
+    "commonName": "Aloe Vera",
+    "scientificName": "Aloe barbadensis miller",
+    "overview": "A succulent plant offering cooling relief for skin burns and digestive soothing when consumed internally.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596547609652-9cf5d8d60be5?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1567684014761-b65e2e59b9eb?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1596547609652-9cf5d8d60be5?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1570530739958-f58c42a27893?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1563299796-b729d0af54a5?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Skin Health", "Burns", "Digestion", "Hydration", "Succulent"],
+    "introduction": {
+      "description": "A succulent plant species of the genus Aloe. It grows wild in tropical climates.",
+      "keyBioactives": ["Acemannan", "Anthraquinones (Aloin)", "Vitamins"],
+      "mechanisms": ["Fibroblast stimulation", "Prostaglandin inhibition", "Laxative effect (latex)"]
+    },
+    "habitat": {
+      "nativeRange": "Arabian Peninsula.",
+      "ecology": "Arid, sandy regions.",
+      "altitude": "Lowlands.",
+      "climate": "Hot, dry; frost intolerant."
+    },
+    "cultivation": {
+      "soil": "Sandy, well-drained, pH 7.0-8.5.",
+      "planting": { "propagation": "Suckers/Pups", "seedRate": "N/A", "spacing": "60 × 60 cm" },
+      "season": "Rainy season.",
+      "inputs": "Minimal water; avoid waterlogging.",
+      "varieties": ["Sim-Sheetal", "IC111271"],
+      "cropDuration": "18 months to first harvest",
+      "yieldNote": "Leaves harvested every few months."
+    },
+    "partsUsed": [
+      { "part": "Leaf Gel", "uses": "Skin soothing, juice." },
+      { "part": "Leaf Latex", "uses": "Strong laxative (caution used)." }
+    ],
+    "varieties": { "releasedCultivars": ["AL-1"], "chemotypes": "High gel yield types." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Polysaccharides", "Anthraquinones", "Sterols"],
+      "distributionSummary": "Inner gel is water/polysaccharide; outer rind is bitter latex."
+    },
+    "medicinalUses": ["Sunburn", "Wound healing", "Constipation", "Psoriasis"],
+    "medicinalProperties": ["Vulnerary", "Emollient", "Purgative", "Anti-inflammatory"],
+    "references": ["Dermatology reviews", "Botanical safety handbooks"]
+  },
+  {
+    "id": "shatavari",
+    "commonName": "Shatavari",
+    "scientificName": "Asparagus racemosus",
+    "overview": "Translating to 'She who possesses a hundred husbands', Shatavari is the premier female reproductive tonic in Ayurveda.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1615484477744-b384d2847953?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1615484477744-b384d2847953?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596515408544-b0241031c038?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1611078489935-0cb964de46d6?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196913501-c88f28c242c7?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Women's Health", "Hormonal Balance", "Lactation", "Cooling", "Adaptogen"],
+    "introduction": {
+      "description": "A woody climber with needle-like leaves and tuberous roots.",
+      "keyBioactives": ["Shatavarin I-IV", "Sarsasapogenin"],
+      "mechanisms": ["Phytoestrogenic activity", "Galactagogue effect", "Gastric cytoprotection"]
+    },
+    "habitat": {
+      "nativeRange": "Sri Lanka, India, Himalayas.",
+      "ecology": "Gravelly, rocky soils in shade.",
+      "altitude": "Up to 1400m.",
+      "climate": "Tropical/Subtropical."
+    },
+    "cultivation": {
+      "soil": "Sandy loam with good drainage.",
+      "planting": { "propagation": "Root suckers or seeds", "seedRate": "N/A", "spacing": "60 × 60 cm" },
+      "season": "Monsoon.",
+      "inputs": "Requires staking/support.",
+      "varieties": ["CIM-Shakti"],
+      "cropDuration": "18-24 months",
+      "yieldNote": "Roots dig deeper with age."
+    },
+    "partsUsed": [
+      { "part": "Tuberous Roots", "uses": "Medicinal powder, ghrita." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A"], "chemotypes": "Saponin profile variations." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Steroidal saponins", "Isoflavones"],
+      "distributionSummary": "Roots are the storage organ for saponins."
+    },
+    "medicinalUses": ["Menopause symptoms", "Lactation support", "Gastric ulcers", "Fertility"],
+    "medicinalProperties": ["Galactagogue", "Demulcent", "Refrigerant", "Aphrodisiac"],
+    "references": ["Gynecological herbal studies", "Ayurvedic texts"]
+  },
+  {
+    "id": "moringa",
+    "commonName": "Moringa",
+    "scientificName": "Moringa oleifera",
+    "overview": "The 'Miracle Tree', incredibly nutrient-dense, providing proteins, vitamins, and minerals to fight malnutrition and inflammation.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1615485925705-5813354972e2?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1589139857948-436f52230fb3?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1615485925705-5813354972e2?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1628189680373-30588657448e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Superfood", "Nutrition", "Energy", "Antioxidant", "Detox"],
+    "introduction": {
+      "description": "A fast-growing, drought-resistant tree used for food and water purification.",
+      "keyBioactives": ["Isothiocyanates", "Quercetin", "Chlorogenic acid"],
+      "mechanisms": ["Nrf2 activation", "Inflammation suppression", "Blood glucose regulation"]
+    },
+    "habitat": {
+      "nativeRange": "Indian subcontinent.",
+      "ecology": "Semi-arid, tropical.",
+      "altitude": "Lowlands.",
+      "climate": "Hot, semi-arid; drought tolerant."
+    },
+    "cultivation": {
+      "soil": "Sandy or loamy soil.",
+      "planting": { "propagation": "Seeds or cuttings", "seedRate": "N/A", "spacing": "3m × 3m" },
+      "season": "Spring/Monsoon.",
+      "inputs": "Regular pruning to encourage branching.",
+      "varieties": ["PKM-1", "PKM-2"],
+      "cropDuration": "Perennial; leaves harvestable in 6 months",
+      "yieldNote": "Drumsticks annual yield high in PKM varieties."
+    },
+    "partsUsed": [
+      { "part": "Leaves", "uses": "Powder, fresh vegetable." },
+      { "part": "Pods (Drumstick)", "uses": "Vegetable." },
+      { "part": "Seeds", "uses": "Oil, water purification." }
+    ],
+    "varieties": { "releasedCultivars": ["PKM-1"], "chemotypes": "High protein vs high oil." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Glucosinolates", "Vitamins A/C/E", "Protein"],
+      "distributionSummary": "Leaves extremely high in micronutrients."
+    },
+    "medicinalUses": ["Malnutrition", "Arthritis", "Diabetes", "Energy boost"],
+    "medicinalProperties": ["Nutritive", "Anti-inflammatory", "Hypoglycemic", "Antimicrobial"],
+    "references": ["Nutrition journals", "FAO reports"]
+  },
+  {
+    "id": "licorice",
+    "commonName": "Licorice (Mulethi)",
+    "scientificName": "Glycyrrhiza glabra",
+    "overview": "A sweet root used to soothe throats, heal ulcers, and harmonize other herbal formulas.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1564486668725-b77290ceb68b?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1615484477744-b384d2847953?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1564486668725-b77290ceb68b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Throat Health", "Digestion", "Sweetener", "Adrenal Support", "Respiratory"],
+    "introduction": {
+      "description": "A herbaceous perennial legume.",
+      "keyBioactives": ["Glycyrrhizin", "Glabridin", "Liquiritin"],
+      "mechanisms": ["Cortisol half-life extension", "Mucus production stimulation", "Viral entry inhibition"]
+    },
+    "habitat": {
+      "nativeRange": "Southern Europe, Western Asia.",
+      "ecology": "River banks, dry river beds.",
+      "altitude": "Low to moderate.",
+      "climate": "Warm, dry summers."
+    },
+    "cultivation": {
+      "soil": "Deep, sandy loam.",
+      "planting": { "propagation": "Stolon cuttings", "seedRate": "N/A", "spacing": "90 × 45 cm" },
+      "season": "Spring.",
+      "inputs": "Moderate water.",
+      "varieties": ["Haryana Mulhatti-1"],
+      "cropDuration": "2-3 years",
+      "yieldNote": "Roots harvested in winter."
+    },
+    "partsUsed": [
+      { "part": "Roots/Stolons", "uses": "Tea, extract, chew sticks." }
+    ],
+    "varieties": { "releasedCultivars": ["Mishra"], "chemotypes": "High Glycyrrhizin." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Triterpene saponins", "Flavonoids"],
+      "distributionSummary": "Glycyrrhizin is 50x sweeter than sugar."
+    },
+    "medicinalUses": ["Sore throat", "Gastric ulcers", "Adrenal fatigue", "Hyperpigmentation (topical)"],
+    "medicinalProperties": ["Demulcent", "Expectorant", "Adrenal tonic", "Anti-viral"],
+    "references": ["Pharmacopoeia", "Endocrinology studies"]
+  },
+  {
+    "id": "triphala-haritaki",
+    "commonName": "Haritaki",
+    "scientificName": "Terminalia chebula",
+    "overview": "One of the three fruits in Triphala, known as the 'King of Medicines' in Tibet, used for detoxification and digestive regularity.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1621257125368-22f3e4933971?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1621257125368-22f3e4933971?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1601633512297-c2576a8dc588?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596515408544-b0241031c038?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1635352614828-d710892095f9?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Digestion", "Detox", "Triphala", "Ayurveda", "Cleansing"],
+    "introduction": {
+      "description": "A deciduous tree native to South Asia.",
+      "keyBioactives": ["Chebulagic acid", "Chebulinic acid", "Tannins"],
+      "mechanisms": ["Prokinetic effect", "Antioxidant", "Microbiome modulation"]
+    },
+    "habitat": {
+      "nativeRange": "India, Nepal, China.",
+      "ecology": "Deciduous forests.",
+      "altitude": "Up to 1500m.",
+      "climate": "Tropical."
+    },
+    "cultivation": {
+      "soil": "Clay to sandy loam.",
+      "planting": { "propagation": "Seeds", "seedRate": "N/A", "spacing": "10m × 10m" },
+      "season": "Monsoon.",
+      "inputs": "Low input tree.",
+      "varieties": ["Varieties based on fruit size/shape"],
+      "cropDuration": "Perennial",
+      "yieldNote": "Fruits harvested when turning yellow."
+    },
+    "partsUsed": [
+      { "part": "Fruit Rind", "uses": "Powder, decoction." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A"], "chemotypes": "Tannin variations." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Hydrolyzable tannins", "Anthraquinones"],
+      "distributionSummary": "High tannin content gives astringent taste."
+    },
+    "medicinalUses": ["Constipation", "Digestive toxicity", "Eye health", "Wound washing"],
+    "medicinalProperties": ["Laxative", "Astringent", "Alterative", "Antibacterial"],
+    "references": ["Ayurvedic classics", "Gastrointestinal studies"]
+  },
+  {
+    "id": "gotu-kola",
+    "commonName": "Gotu Kola (Mandukaparni)",
+    "scientificName": "Centella asiatica",
+    "overview": "A brain and skin tonic, often confused with Brahmi, but distinct for its collagen-boosting and venous health properties.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1579783902614-a3fb39279c0f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1628189680373-30588657448e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Skin Elasticity", "Memory", "Circulation", "Vein Health", "Meditation"],
+    "introduction": {
+      "description": "A small herbaceous annual plant of the family Mackinlayaceae.",
+      "keyBioactives": ["Asiaticoside", "Madecassoside", "Asiatic acid"],
+      "mechanisms": ["Collagen synthesis stimulation", "Microcirculation improvement", "Neuroprotection"]
+    },
+    "habitat": {
+      "nativeRange": "Asia wetlands.",
+      "ecology": "Swampy areas, shade.",
+      "altitude": "Up to 2000m.",
+      "climate": "Tropical, humid."
+    },
+    "cultivation": {
+      "soil": "Wet, clayey soil.",
+      "planting": { "propagation": "Runners", "seedRate": "N/A", "spacing": "30 × 30 cm" },
+      "season": "Spring.",
+      "inputs": "High moisture requirement.",
+      "varieties": ["Vallabh Medha"],
+      "cropDuration": "3-4 months",
+      "yieldNote": "Harvested as whole plant."
+    },
+    "partsUsed": [
+      { "part": "Whole Plant", "uses": "Salads, juice, powder." }
+    ],
+    "varieties": { "releasedCultivars": ["Vallabh Medha"], "chemotypes": "Triterpene content." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Triterpenoid saponins"],
+      "distributionSummary": "Leaves rich in active saponins."
+    },
+    "medicinalUses": ["Varicose veins", "Scar healing", "Memory enhancement", "Anxiety"],
+    "medicinalProperties": ["Vulnerary", "Venotonic", "Nootropic", "Alterative"],
+    "references": ["Dermatology research", "Cognitive science"]
+  },
+  {
+    "id": "arjuna",
+    "commonName": "Arjuna",
+    "scientificName": "Terminalia arjuna",
+    "overview": "The premier heart tonic in Ayurveda, the bark of the Arjuna tree is used to strengthen cardiac muscle and regulate blood pressure.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1628062083547-4f605ad9d66f?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1599812403568-1250268579d4?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1549495751-224422c54483?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196913501-c88f28c242c7?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Heart Health", "Cardio", "Blood Pressure", "Ayurveda", "Tree Bark"],
+    "introduction": {
+      "description": "A large, evergreen tree with buttressed trunk and smooth grey bark.",
+      "keyBioactives": ["Arjunolic acid", "Arjunin", "Flavonoids"],
+      "mechanisms": ["Inotropic effect", "Hypolipidemic", "Antioxidant protection of heart tissue"]
+    },
+    "habitat": {
+      "nativeRange": "Indian Subcontinent.",
+      "ecology": "Banks of rivers and streams.",
+      "altitude": "Lowlands.",
+      "climate": "Tropical."
+    },
+    "cultivation": {
+      "soil": "Alluvial loam.",
+      "planting": { "propagation": "Seeds", "seedRate": "N/A", "spacing": "10m × 10m" },
+      "season": "Monsoon.",
+      "inputs": "Low input.",
+      "varieties": ["Wild types"],
+      "cropDuration": "Perennial (Bark harvest after 10 years)",
+      "yieldNote": "Bark regenerates if harvested sustainably."
+    },
+    "partsUsed": [
+      { "part": "Bark", "uses": "Decoction (Ksheerpak), powder." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A"], "chemotypes": "Tannin/Flavonoid ratios." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Triterpenoids", "Glycosides", "Co-Q10"],
+      "distributionSummary": "Inner bark is the medicinal source."
+    },
+    "medicinalUses": ["Angina", "Hypertension", "Dyslipidemia", "Heart failure adjunct"],
+    "medicinalProperties": ["Cardiotonic", "Hypotensive", "Astringent", "Anti-ischemic"],
+    "references": ["Cardiology journals", "Ayurvedic Pharmacopoeia"]
+  },
+  {
+    "id": "fenugreek",
+    "commonName": "Fenugreek (Methi)",
+    "scientificName": "Trigonella foenum-graecum",
+    "overview": "A common kitchen spice with powerful applications for blood sugar control, lactation support, and testosterone support.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1596515408544-b0241031c038?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1557008892-0b4459d81d4e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Diabetes", "Lactation", "Testosterone", "Spice", "Hair"],
+    "introduction": {
+      "description": "An annual plant in the family Fabaceae.",
+      "keyBioactives": ["Trigonelline", "Galactomannan", "4-hydroxyisoleucine"],
+      "mechanisms": ["Insulin sensitivity improvement", "Carbohydrate absorption delay", "Hormone modulation"]
+    },
+    "habitat": {
+      "nativeRange": "Near East.",
+      "ecology": "Cultivated widely.",
+      "altitude": "Varied.",
+      "climate": "Cool growing season."
+    },
+    "cultivation": {
+      "soil": "Loamy, well-drained.",
+      "planting": { "propagation": "Seeds", "seedRate": "25 kg/ha", "spacing": "30 × 10 cm" },
+      "season": "Winter (Rabi crop).",
+      "inputs": "Moderate water.",
+      "varieties": ["Hisar Sonali", "Rmt-1"],
+      "cropDuration": "90-120 days",
+      "yieldNote": "Seeds harvested when pods turn yellow."
+    },
+    "partsUsed": [
+      { "part": "Seeds", "uses": "Spice, medicine, tea." },
+      { "part": "Leaves", "uses": "Vegetable (Methi)." }
+    ],
+    "varieties": { "releasedCultivars": ["Gujarat Methi-1"], "chemotypes": "Diosgenin content." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Saponins (Diosgenin)", "Alkaloids", "Mucilage"],
+      "distributionSummary": "Seeds rich in mucilage and saponins."
+    },
+    "medicinalUses": ["Diabetes type 2", "Low milk supply", "Libido support", "Dandruff"],
+    "medicinalProperties": ["Hypoglycemic", "Galactagogue", "Demulcent", "Anti-inflammatory"],
+    "references": ["Diabetes care journals", "Food chemistry"]
+  },
+  {
+    "id": "cinnamon",
+    "commonName": "Cinnamon",
+    "scientificName": "Cinnamomum verum",
+    "overview": "A warming spice derived from the inner bark of trees, supporting metabolic health and blood sugar balance.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1557008892-0b4459d81d4e?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1615485290341-283195204484?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1557008892-0b4459d81d4e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Metabolism", "Blood Sugar", "Warming", "Spice", "Aromatic"],
+    "introduction": {
+      "description": "True cinnamon is a small evergreen tree native to Sri Lanka.",
+      "keyBioactives": ["Cinnamaldehyde", "Eugenol", "Cinnamic acid"],
+      "mechanisms": ["Insulin mimetic", "Gastric emptying delay", "Antimicrobial"]
+    },
+    "habitat": {
+      "nativeRange": "Sri Lanka.",
+      "ecology": "Wet tropical forests.",
+      "altitude": "Lowlands.",
+      "climate": "Hot and humid."
+    },
+    "cultivation": {
+      "soil": "Sandy soil (silica rich).",
+      "planting": { "propagation": "Seeds/Cuttings", "seedRate": "N/A", "spacing": "2m × 2m" },
+      "season": "Rainy season.",
+      "inputs": "Mulching.",
+      "varieties": ["Navashree", "Nithyashree"],
+      "cropDuration": "Perennial (Coppicing after 3 years)",
+      "yieldNote": "Quills rolled from inner bark."
+    },
+    "partsUsed": [
+      { "part": "Inner Bark", "uses": "Spice, oil, extract." },
+      { "part": "Leaf", "uses": "Oil (rich in Eugenol)." }
+    ],
+    "varieties": { "releasedCultivars": ["Yercaud-1"], "chemotypes": "Cinnamaldehyde vs Eugenol." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Essential oils", "Tannins"],
+      "distributionSummary": "Bark oil is cinnamaldehyde; Leaf oil is eugenol."
+    },
+    "medicinalUses": ["Insulin resistance", "Digestive spasms", "Cold extremities", "Fungal infections"],
+    "medicinalProperties": ["Hypoglycemic", "Carminative", "Antifungal", "Astringent"],
+    "references": ["Clinical nutrition", "Essential oil research"]
+  },
+  {
+    "id": "clove",
+    "commonName": "Clove",
+    "scientificName": "Syzygium aromaticum",
+    "overview": "The dried flower buds of the clove tree, possessing intense numbing and antimicrobial properties, famously used for toothaches.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1557008892-0b4459d81d4e?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1596700877983-2f22b8214b7e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1564486668725-b77290ceb68b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596515408544-b0241031c038?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Dental", "Pain Relief", "Antimicrobial", "Spice", "Digestion"],
+    "introduction": {
+      "description": "An evergreen tree of the myrtle family.",
+      "keyBioactives": ["Eugenol", "Acetyl eugenol", "Caryophyllene"],
+      "mechanisms": ["Nerve numbing (local anesthetic)", "Bacterial membrane disruption", "Prostaglandin inhibition"]
+    },
+    "habitat": {
+      "nativeRange": "Maluku Islands (Indonesia).",
+      "ecology": "Tropical maritime climates.",
+      "altitude": "Up to 1000m.",
+      "climate": "Warm, humid, high rainfall."
+    },
+    "cultivation": {
+      "soil": "Deep red loam.",
+      "planting": { "propagation": "Seeds", "seedRate": "N/A", "spacing": "6m × 6m" },
+      "season": "Monsoon.",
+      "inputs": "Shade needed for young plants.",
+      "varieties": ["Zanzibar"],
+      "cropDuration": "Perennial (First harvest 6-7 years)",
+      "yieldNote": "Buds harvested before opening."
+    },
+    "partsUsed": [
+      { "part": "Flower Bud", "uses": "Spice, oil, medicine." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A"], "chemotypes": "Eugenol content." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Phenylpropanoids", "Flavonoids"],
+      "distributionSummary": "Bud contains up to 20% essential oil."
+    },
+    "medicinalUses": ["Toothache", "Oral hygiene", "Digestive gas", "Parasites"],
+    "medicinalProperties": ["Analgesic", "Antiseptic", "Carminative", "Anthelmintic"],
+    "references": ["Dentistry journals", "Pharmacognosy"]
+  },
+  {
+    "id": "peppermint",
+    "commonName": "Peppermint",
+    "scientificName": "Mentha × piperita",
+    "overview": "A hybrid mint famous for its cooling menthol content, used to soothe IBS, headaches, and respiratory congestion.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1628557044797-f21a177c37ec?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1606757389140-5264b971a1c9?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1628557044797-f21a177c37ec?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["IBS", "Digestion", "Cooling", "Headache", "Aromatic"],
+    "introduction": {
+      "description": "A hybrid species of mint, a cross between watermint and spearmint.",
+      "keyBioactives": ["Menthol", "Menthone", "Rosmarinic acid"],
+      "mechanisms": ["Calcium channel blockade (smooth muscle relaxant)", "TRPM8 receptor activation (cooling)"]
+    },
+    "habitat": {
+      "nativeRange": "Europe, Middle East.",
+      "ecology": "Moist, temperate regions.",
+      "altitude": "Varied.",
+      "climate": "Temperate."
+    },
+    "cultivation": {
+      "soil": "Rich, moist, loamy soil.",
+      "planting": { "propagation": "Runners/Rootstock", "seedRate": "400kg/ha (runners)", "spacing": "40 × 15 cm" },
+      "season": "Spring.",
+      "inputs": "Frequent irrigation.",
+      "varieties": ["Kukrail", "CIM-Indus"],
+      "cropDuration": "90-100 days",
+      "yieldNote": "Harvested just before flowering."
+    },
+    "partsUsed": [
+      { "part": "Leaves", "uses": "Tea, oil extraction." }
+    ],
+    "varieties": { "releasedCultivars": ["Pranjal"], "chemotypes": "Menthol rich." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Monoterpenes", "Phenolic acids"],
+      "distributionSummary": "Oil glands on leaf surface."
+    },
+    "medicinalUses": ["Irritable Bowel Syndrome", "Tension headaches", "Nausea", "Congestion"],
+    "medicinalProperties": ["Antispasmodic", "Analgesic (topical)", "Carminative", "Decongestant"],
+    "references": ["Gastroenterology reviews", "Essential oil safety"]
+  },
+  {
+    "id": "hibiscus",
+    "commonName": "Hibiscus",
+    "scientificName": "Hibiscus sabdariffa",
+    "overview": "A vibrant flower used in refreshing teas, known for supporting blood pressure regulation and hair health.",
+    "images": {
+      "thumbnail": "https://images.unsplash.com/photo-1576015509795-f12745305149?auto=format&fit=crop&w=300&q=80",
+      "cover": "https://images.unsplash.com/photo-1588661757876-0683aa1e40a0?auto=format&fit=crop&w=1080&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1576015509795-f12745305149?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1518531933870-1936136286b7?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1596726591605-7769970c6778?auto=format&fit=crop&w=800&q=80"
+      ],
+      "illustration": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&w=500&q=80"
+    },
+    "tags": ["Blood Pressure", "Antioxidant", "Hair Health", "Vitamin C", "Tea"],
+    "introduction": {
+      "description": "A species of Hibiscus probably native to West Africa, used for the production of bast fibre and as an infusion.",
+      "keyBioactives": ["Anthocyanins", "Hibiscic acid", "Vitamin C"],
+      "mechanisms": ["ACE inhibition", "Diuretic effect", "Vasodilation"]
+    },
+    "habitat": {
+      "nativeRange": "West Africa.",
+      "ecology": "Tropical/Subtropical.",
+      "altitude": "Low to medium.",
+      "climate": "Warm and humid."
+    },
+    "cultivation": {
+      "soil": "Sandy loam.",
+      "planting": { "propagation": "Seeds", "seedRate": "15 kg/ha", "spacing": "60 × 40 cm" },
+      "season": "Monsoon.",
+      "inputs": "Moderate water.",
+      "varieties": ["HS-4288"],
+      "cropDuration": "4-5 months",
+      "yieldNote": "Calyces harvested after flower drops."
+    },
+    "partsUsed": [
+      { "part": "Calyces (Flower)", "uses": "Tea, colorant, extract." },
+      { "part": "Leaves", "uses": "Hair conditioner." }
+    ],
+    "varieties": { "releasedCultivars": ["N/A"], "chemotypes": "Anthocyanin content." },
+    "chemicalConstituents": {
+      "withanolides": [],
+      "others": ["Organic acids", "Anthocyanins", "Polysaccharides"],
+      "distributionSummary": "Deep red calyces are richest in anthocyanins."
+    },
+    "medicinalUses": ["Hypertension", "Hair conditioning", "Fluid retention", "Cooling"],
+    "medicinalProperties": ["Antihypertensive", "Diuretic", "Refrigerant", "Demulcent"],
+    "references": ["Cardiovascular journals", "Ethnobotany"]
+  }
+]
