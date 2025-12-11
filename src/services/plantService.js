@@ -140,6 +140,33 @@ export class PlantService {
     }
   }
 
+  // --- USERS ---
+  async getTags(queries = [Query.limit(100)]) {
+    try {
+      return await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdTags,
+        queries
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getTags :: error", error);
+      return false;
+    }
+  }
+
+  async getUsers(queries = [Query.limit(100)]) {
+    try {
+      return await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdUsers,
+        queries
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getUsers :: error", error);
+      return false;
+    }
+  }
+
   // --- FAMILIES ---
   async getFamilies() {
     try {

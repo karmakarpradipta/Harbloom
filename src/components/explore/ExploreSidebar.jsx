@@ -2,9 +2,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {Separator} from "@/components/ui/separator";
 import {motion} from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useExplore } from "@/context/ExploreContext";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 
 const ExploreSidebar = ({ isOpen, toggleSidebar }) => {
+  const { filters, selectedFilters, toggleFamily, toggleHabitat, resetFilters } = useExplore();
+
   return (
     <aside
       className={`fixed left-0 top-0 h-[100dvh] w-64 border-r border-border bg-card/50 backdrop-blur-xl flex flex-col z-[60] transition-transform duration-300 ${
@@ -34,28 +39,23 @@ const ExploreSidebar = ({ isOpen, toggleSidebar }) => {
 
       <ScrollArea className="flex-1 px-6 overflow-hidden">
         <div className="space-y-8 pb-6">
-          {/* Medicinal Uses */}
+          {/* Families */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-              Medicinal Uses
+              Families
             </h3>
             <div className="space-y-3">
-              {[
-                "Digestive Health",
-                "Immunity",
-                "Skin Care",
-                "Stress Relief",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-3 group cursor-pointer"
-                >
-                  <div className="h-4 w-4 rounded border border-input bg-background group-hover:border-primary transition-colors flex items-center justify-center">
-                    {/* Checkbox indicator would go here */}
-                  </div>
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                    {item}
-                  </span>
+              {filters.families.length === 0 && <p className="text-xs text-muted-foreground">Loading families...</p>}
+              {filters.families.map((family) => (
+                <div key={family.$id} className="flex items-center space-x-2">
+                   <Checkbox 
+                        id={family.$id} 
+                        checked={selectedFilters.families.includes(family.$id)}
+                        onCheckedChange={() => toggleFamily(family.$id)}
+                   />
+                   <Label htmlFor={family.$id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        {family.name}
+                   </Label>
                 </div>
               ))}
             </div>
@@ -63,49 +63,34 @@ const ExploreSidebar = ({ isOpen, toggleSidebar }) => {
 
           <Separator />
 
-          {/* Plant Systems */}
+          {/* Habitats */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-              Plant Systems
+              Habitats
             </h3>
-            <div className="space-y-3">
-              {["Ayurveda", "Homeopathy", "Unani", "Siddha"].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-3 group cursor-pointer"
-                >
-                  <div className="h-4 w-4 rounded border border-input bg-background group-hover:border-primary transition-colors"></div>
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                    {item}
-                  </span>
+             <div className="space-y-3">
+              {filters.habitats.length === 0 && <p className="text-xs text-muted-foreground">Loading habitats...</p>}
+              {filters.habitats.map((habitat) => (
+                <div key={habitat.$id} className="flex items-center space-x-2">
+                   <Checkbox 
+                        id={habitat.$id} 
+                        checked={selectedFilters.habitats.includes(habitat.$id)}
+                        onCheckedChange={() => toggleHabitat(habitat.$id)}
+                   />
+                    <Label htmlFor={habitat.$id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        {habitat.climate} {habitat.soil_type ? `- ${habitat.soil_type}` : ""}
+                   </Label>
                 </div>
               ))}
             </div>
           </div>
-
-          <Separator />
-
-          {/* Alphabetical */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-              Alphabetical
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-2 py-1 text-xs font-bold bg-primary/10 text-primary rounded cursor-pointer">
-                A-Z
-              </span>
-              <span className="px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted rounded cursor-pointer transition-colors">
-                Z-A
-              </span>
-            </div>
-          </div>
+          
         </div>
       </ScrollArea>
 
       <div className="p-6 mt-auto border-t border-border space-y-3">
-        <Button className="w-full font-bold shadow-md">Apply Filters</Button>
-        <Button variant="outline" className="w-full">
-          Reset
+        <Button variant="outline" className="w-full" onClick={resetFilters}>
+            Reset Filters
         </Button>
       </div>
     </aside>

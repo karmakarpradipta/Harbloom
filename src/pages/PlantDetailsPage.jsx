@@ -14,6 +14,7 @@ import {
   Sun,
   Wind,
   Info,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -23,8 +24,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import plantsData from "@/data/plants.json";
 import { cn } from "@/lib/utils";
+import plantService from "@/services/plantService";
 
 const PlantDetailsPage = () => {
   const { id } = useParams();
@@ -34,22 +35,114 @@ const PlantDetailsPage = () => {
   const [activePart, setActivePart] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    // Simulate network delay for skeleton demo
-    const timer = setTimeout(() => {
-      const foundPlant = plantsData.find((p) => p.id === id);
-      if (!foundPlant) {
-        navigate("/404", { state: { message: "Plant not found." } });
-        return;
+    const fetchPlantDetails = async () => {
+      setIsLoading(true);
+      console.log("Fetching details for plant ID:", id); // DEBUG LOG
+      try {
+        // Parallel Fetch: Plant Doc + Images + Tags Lookup
+        const [plantDoc, imagesRes, tagsRes] = await Promise.all([
+             plantService.getPlant(id),
+             plantService.getPlantImages(id),
+             plantService.getTags()
+        ]);
+        
+        console.log("Fetched plant doc:", plantDoc); // DEBUG LOG
+        
+        if (!plantDoc) {
+          console.warn("Plant doc not found or error in fetch");
+          setIsLoading(false);
+          return;
+        }
+
+        // Create Tags Map
+        const localTagsMap = {};
+        if (tagsRes && tagsRes.documents) {
+            tagsRes.documents.forEach(tag => {
+                localTagsMap[tag.$id] = tag.name;
+            });
+        }
+
+        const images = imagesRes?.documents?.map(img => img.url) || [];
+        const coverImage = images[0] || "https://images.unsplash.com/photo-1546237769-1f487e413000?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3"; 
+
+        // Process Tags
+        const rawTags = plantDoc.tags || [];
+        const visibleTags = rawTags.map(t => {
+            let tagId = t;
+            if (typeof t === 'object' && t.name) return t.name;
+            if (typeof t === 'object' && t.$id) tagId = t.$id;
+
+            if (localTagsMap[tagId]) return localTagsMap[tagId];
+            
+            if (typeof tagId === 'string') {
+                if (tagId.length >= 18 && /^[a-zA-Z0-9]+$/.test(tagId)) return null;
+                return tagId;
+            }
+            return null;
+        }).filter(Boolean);
+
+
+        // Map Database Fields to UI Structure
+        const mappedPlant = {
+            id: plantDoc.$id,
+            commonName: (plantDoc.common_names && plantDoc.common_names.length > 0) ? plantDoc.common_names.join(", ") : plantDoc.name,
+            scientificName: plantDoc.scientific_name || plantDoc.species || "Unknown Scientific Name",
+            tags: visibleTags,
+            overview: plantDoc.description || "No overview available.",
+            introduction: {
+                description: plantDoc.botanical_description || plantDoc.description || "Botanical description not available.",
+                keyBioactives: plantDoc.chemical_constituents || ["Tannins", "Flavonoids"], // Fallback or fetch from relation
+            },
+            partsUsed: plantDoc.medicinal_uses ? plantDoc.medicinal_uses.map(use => ({
+                part: "Whole Plant", // Schema might vary, checking simpler mapping first
+                uses: use,
+            })) : [
+                {
+                    part: "Leaves",
+                    uses: "Traditionally used for various remedies.",
+                }
+            ],
+            habitat: {
+                nativeRange: plantDoc.origin || "Unknown",
+                climate: "Tropical / Subtropical", // Placeholder if not in doc
+                altitude: "0-2000m",
+                ecology: "Various",
+            },
+            images: {
+                cover: coverImage,
+                gallery: images.length > 0 ? images : [coverImage],
+                illustration: "https://images.unsplash.com/photo-1598236767471-2dc04aeb9d51?auto=format&fit=crop&q=80&w=600",
+            }
+        };
+
+        // Attempt to extract richer data if available in nested objects (if expanded)
+        if(plantDoc.family) {
+             // mappedPlant.family = plantDoc.family.name;
+        }
+        
+        // Mocking parts if simple string array
+        if(plantDoc.parts_used && Array.isArray(plantDoc.parts_used)) {
+             mappedPlant.partsUsed = plantDoc.parts_used.map(part => ({
+                  part: part,
+                  uses: `Medicinal uses associated with ${part}.`
+             }));
+        }
+
+        setPlant(mappedPlant);
+        if (mappedPlant.partsUsed?.length > 0) {
+          setActivePart(mappedPlant.partsUsed[0].part);
+        }
+      } catch (error) {
+        console.error("Error fetching plant details:", error);
+      } finally {
+        setIsLoading(false);
+        window.scrollTo(0, 0);
       }
-      setPlant(foundPlant);
-      if (foundPlant.partsUsed?.length > 0) {
-        setActivePart(foundPlant.partsUsed[0].part);
-      }
-      setIsLoading(false);
-      window.scrollTo(0, 0);
-    }, 600); // 600ms fake loading
-    return () => clearTimeout(timer);
+    };
+
+    if (id) {
+        fetchPlantDetails();
+    }
   }, [id, navigate]);
 
   // Breadcrumb Logic
@@ -57,7 +150,8 @@ const PlantDetailsPage = () => {
     if (!plant) return [];
     return [
       { label: "Home", href: "/home" },
-      { label: plant.commonName }, // Current page, no link
+      { label: "Explore", href: "/home" },
+      { label: plant.commonName }, 
     ];
   }, [plant]);
 
@@ -91,32 +185,33 @@ const PlantDetailsPage = () => {
           <Skeleton className="w-full h-full" />
         </div>
         <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-          <div className="flex gap-4">
-            <Skeleton className="h-8 w-24 rounded-full" />
-            <Skeleton className="h-8 w-24 rounded-full" />
-          </div>
-          <Skeleton className="h-12 w-3/4" />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="space-y-4">
-              <Skeleton className="h-40 w-full" />
-              <Skeleton className="h-40 w-full" />
+            <div className="flex items-center justify-center h-40">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
             </div>
-            <div className="lg:col-span-2 space-y-4">
-              <Skeleton className="h-10 w-full mb-8" />
-              <Skeleton className="h-64 w-full" />
-            </div>
-          </div>
         </div>
       </DashboardLayout>
     );
   }
 
-  if (!plant) return null;
+  if (!plant) {
+      return (
+        <DashboardLayout breadcrumbs={[{ label: "Error" }]}>
+            <div className="container mx-auto px-4 py-20 text-center">
+                <h2 className="text-3xl font-bold mb-4">Plant details could not be loaded.</h2>
+                <p className="text-muted-foreground mb-8">Please try again later or verify the URL.</p>
+                <Button onClick={() => navigate("/home")}>Go Back Home</Button>
+                <div className="mt-8 p-4 bg-muted max-w-lg mx-auto rounded text-left font-mono text-xs">
+                    Debug ID: {id}
+                </div>
+            </div>
+        </DashboardLayout>
+      );
+  }
 
   return (
     <DashboardLayout breadcrumbs={breadcrumbs}>
       {/* Hero Section */}
-      <div className="relative w-full h-[50vh] md:h-[60vh] min-h-[400px] overflow-hidden group">
+      <div className="relative w-full h-[50vh] md:h-[60vh] min-h-[400px] overflow-hidden group rounded-3xl mb-8">
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent z-10" />
         <img
           src={plant.images.cover}
@@ -291,6 +386,7 @@ const PlantDetailsPage = () => {
                 </div>
               </div>
 
+              {plant.partsUsed.length > 0 ? (
               <Tabs
                 defaultValue={plant.partsUsed[0]?.part}
                 onValueChange={setActivePart}
@@ -368,6 +464,9 @@ const PlantDetailsPage = () => {
                   </TabsContent>
                 ))}
               </Tabs>
+              ) : (
+                  <div className="text-muted-foreground italic">No medicinal parts information available.</div>
+              )}
             </section>
 
             <Separator />

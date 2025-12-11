@@ -5,19 +5,23 @@ import CategoryChips from "@/components/explore/CategoryChips";
 import FeaturedPlants from "@/components/explore/FeaturedPlants";
 import PlantGrid from "@/components/explore/PlantGrid";
 
+import { ExploreProvider } from "@/context/ExploreContext";
+
 const HomePage = () => {
   return (
-    <DashboardLayout>
-      <div className="max-w-7xl mx-auto">
-        <DashboardHero />
+    <ExploreProvider>
+      <DashboardLayout>
+        <div className="max-w-7xl mx-auto">
+          <DashboardHero />
 
-        <div className="space-y-12 w-full mt-8 md:mt-12 lg:mt-16">
-          <CategoryChips />
-          <FeaturedPlants />
-          <PlantGrid />
+          <div className="space-y-12 w-full mt-8 md:mt-12 lg:mt-16">
+            <CategoryChips />
+            <FeaturedPlants />
+            <PlantGrid />
+          </div>
         </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ExploreProvider>
   );
 };
 
