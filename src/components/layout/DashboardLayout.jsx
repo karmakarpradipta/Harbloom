@@ -66,8 +66,10 @@ const DashboardLayout = ({ children, breadcrumbs, showSidebar = true }) => {
         />
 
         {breadcrumbs && (
-          <div className="sticky top-20 z-40 container mx-auto px-4 py-4 md:px-8 bg-background transition-all">
-            <Breadcrumbs items={breadcrumbs} />
+          <div className="sticky top-20 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container mx-auto px-4 py-3 md:px-8">
+              <Breadcrumbs items={breadcrumbs} />
+            </div>
           </div>
         )}
 

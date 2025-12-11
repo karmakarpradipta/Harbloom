@@ -1,0 +1,294 @@
+{
+  "collections": [
+    {
+      "name": "families",
+      "attributes": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "author_citation", "type": "string", "required": false },
+        { "name": "description", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "plant_parts",
+      "attributes": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "description", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "tags",
+      "attributes": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "type", "type": "string", "required": false },
+        { "name": "description", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "chemical_constituents",
+      "attributes": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "class", "type": "string", "required": false },
+        { "name": "formula", "type": "string", "required": false },
+        { "name": "cas_number", "type": "string", "required": false },
+        { "name": "description", "type": "string", "required": false },
+        { "name": "pubchem_cid", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "origins",
+      "attributes": [
+        { "name": "region", "type": "string", "required": false },
+        { "name": "countries", "type": "array", "required": false },
+        { "name": "native_status", "type": "string", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "habitats",
+      "attributes": [
+        { "name": "climate", "type": "string", "required": false },
+        { "name": "temperature_min", "type": "number", "required": false },
+        { "name": "temperature_max", "type": "number", "required": false },
+        { "name": "soil_type", "type": "string", "required": false },
+        { "name": "soil_ph_min", "type": "number", "required": false },
+        { "name": "soil_ph_max", "type": "number", "required": false },
+        { "name": "light", "type": "string", "required": false },
+        { "name": "rainfall_min", "type": "number", "required": false },
+        { "name": "rainfall_max", "type": "number", "required": false },
+        { "name": "typical_habitats", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "ayurvedic_properties",
+      "attributes": [
+        { "name": "tridoshic", "type": "boolean", "required": false },
+        { "name": "rasa", "type": "array", "required": false },
+        { "name": "virya", "type": "string", "required": false },
+        { "name": "vipaka", "type": "string", "required": false },
+        { "name": "dosha_effect_vata", "type": "string", "required": false },
+        { "name": "dosha_effect_pitta", "type": "string", "required": false },
+        { "name": "dosha_effect_kapha", "type": "string", "required": false },
+        { "name": "classical_references", "type": "array", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "chemical_profiles",
+      "attributes": [
+        { "name": "overview", "type": "string", "required": false },
+        { "name": "main_constituents", "type": "array", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "medicinal_profiles",
+      "attributes": [
+        { "name": "traditional_uses", "type": "string", "required": false },
+        { "name": "modern_uses", "type": "string", "required": false },
+        { "name": "systems", "type": "array", "required": false },
+        { "name": "actions", "type": "array", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "propagation_methods",
+      "attributes": [
+        { "name": "methods", "type": "array", "required": false },
+        { "name": "details", "type": "string", "required": false },
+        { "name": "seed_treatment", "type": "string", "required": false },
+        { "name": "germination_time", "type": "string", "required": false },
+        { "name": "vegetative_method_notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "cultivation_requirements",
+      "attributes": [
+        { "name": "land_preparation", "type": "string", "required": false },
+        { "name": "sowing_time", "type": "string", "required": false },
+        { "name": "spacing", "type": "string", "required": false },
+        { "name": "irrigation", "type": "string", "required": false },
+        { "name": "fertilizer", "type": "string", "required": false },
+        { "name": "harvest_time", "type": "string", "required": false },
+        { "name": "yield_info", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "plant_morphology",
+      "attributes": [
+        { "name": "habit", "type": "string", "required": false },
+        { "name": "root_description", "type": "string", "required": false },
+        { "name": "stem_description", "type": "string", "required": false },
+        { "name": "leaf_description", "type": "string", "required": false },
+        { "name": "flower_description", "type": "string", "required": false },
+        { "name": "fruit_seed_description", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "safety_and_risks",
+      "attributes": [
+        { "name": "toxicity", "type": "string", "required": false },
+        { "name": "contraindications", "type": "string", "required": false },
+        { "name": "pregnancy_lactation", "type": "string", "required": false },
+        { "name": "drug_interactions", "type": "string", "required": false },
+        { "name": "side_effects", "type": "string", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "plants",
+      "attributes": [
+        { "name": "scientific_name", "type": "string", "required": true },
+        { "name": "family_name", "type": "string", "required": false },
+        { "name": "genus", "type": "string", "required": false },
+        { "name": "species", "type": "string", "required": false },
+        { "name": "botanical_synonyms", "type": "array", "required": false },
+        { "name": "common_names", "type": "array", "required": false },
+        { "name": "plant_type", "type": "string", "required": false },
+        { "name": "short_description", "type": "string", "required": false },
+        { "name": "full_description", "type": "string", "required": false },
+        { "name": "images", "type": "array", "required": false },
+        { "name": "tags", "type": "array", "required": false },
+        { "name": "created_at", "type": "datetime", "required": true },
+        { "name": "updated_at", "type": "datetime", "required": true }
+      ],
+      "relations": [
+        { "field": "family", "target": "families", "type": "one-to-one", "required": true },
+        { "field": "origin", "target": "origins", "type": "one-to-one", "required": false },
+        { "field": "habitat", "target": "habitats", "type": "one-to-one", "required": false },
+        { "field": "ayurveda", "target": "ayurvedic_properties", "type": "one-to-one", "required": false },
+        { "field": "chemical_profile", "target": "chemical_profiles", "type": "one-to-one", "required": false },
+        { "field": "medicinal_profile", "target": "medicinal_profiles", "type": "one-to-one", "required": false },
+        { "field": "propagation", "target": "propagation_methods", "type": "one-to-one", "required": false },
+        { "field": "cultivation", "target": "cultivation_requirements", "type": "one-to-one", "required": false },
+        { "field": "morphology", "target": "plant_morphology", "type": "one-to-one", "required": false },
+        { "field": "risks", "target": "safety_and_risks", "type": "one-to-one", "required": false }
+      ]
+    },
+    {
+      "name": "plant_varieties",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "rank", "type": "string", "required": false },
+        { "name": "scientific_name", "type": "string", "required": true },
+        { "name": "common_name", "type": "string", "required": false },
+        { "name": "morphological_notes", "type": "string", "required": false },
+        { "name": "usage_notes", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true }
+      ]
+    },
+    {
+      "name": "plant_medicinal_actions",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "action_term", "type": "string", "required": true },
+        { "name": "action_system", "type": "string", "required": false },
+        { "name": "target_system", "type": "string", "required": false },
+        { "name": "evidence_level", "type": "string", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true }
+      ]
+    },
+    {
+      "name": "plant_part_usage",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "plant_part", "type": "string", "required": true },
+        { "name": "preparation_form", "type": "string", "required": false },
+        { "name": "route", "type": "string", "required": false },
+        { "name": "indication", "type": "string", "required": true },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true },
+        { "field": "plant_part", "target": "plant_parts", "type": "many-to-one", "required": true }
+      ]
+    },
+    {
+      "name": "plant_chemical_map",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "chemical", "type": "string", "required": true },
+        { "name": "plant_part", "type": "string", "required": false },
+        { "name": "concentration_min", "type": "number", "required": false },
+        { "name": "concentration_max", "type": "number", "required": false },
+        { "name": "unit", "type": "string", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true },
+        { "field": "chemical", "target": "chemical_constituents", "type": "many-to-one", "required": true },
+        { "field": "plant_part", "target": "plant_parts", "type": "many-to-one", "required": false }
+      ]
+    },
+    {
+      "name": "plant_tags",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "tag", "type": "string", "required": true }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true },
+        { "field": "tag", "target": "tags", "type": "many-to-one", "required": true }
+      ]
+    },
+    {
+      "name": "references",
+      "attributes": [
+        { "name": "title", "type": "string", "required": true },
+        { "name": "authors", "type": "string", "required": false },
+        { "name": "year", "type": "number", "required": false },
+        { "name": "journal_or_book", "type": "string", "required": false },
+        { "name": "doi", "type": "string", "required": false },
+        { "name": "url", "type": "url", "required": false },
+        { "name": "reference_type", "type": "string", "required": false },
+        { "name": "notes", "type": "string", "required": false }
+      ],
+      "relations": []
+    },
+    {
+      "name": "plant_references",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "reference", "type": "string", "required": true },
+        { "name": "relation_type", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true },
+        { "field": "reference", "target": "references", "type": "many-to-one", "required": true }
+      ]
+    },
+    {
+      "name": "images",
+      "attributes": [
+        { "name": "plant", "type": "string", "required": true },
+        { "name": "plant_variety", "type": "string", "required": false },
+        { "name": "url", "type": "url", "required": true },
+        { "name": "caption", "type": "string", "required": false },
+        { "name": "photographer", "type": "string", "required": false },
+        { "name": "license", "type": "string", "required": false },
+        { "name": "source", "type": "string", "required": false },
+        { "name": "shot_part", "type": "string", "required": false }
+      ],
+      "relations": [
+        { "field": "plant", "target": "plants", "type": "many-to-one", "required": true },
+        { "field": "plant_variety", "target": "plant_varieties", "type": "many-to-one", "required": false }
+      ]
+    }
+  ]
+}

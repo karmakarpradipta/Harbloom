@@ -19,7 +19,6 @@ export const loginUser = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      console.log("Login attempt with:", { email, password });
       await account.createEmailPasswordSession({ email, password });
       const user = await account.get();
       return user;
@@ -111,6 +110,22 @@ export const updateUserAvatar = createAsyncThunk(
       return updatedUser;
     } catch (error) {
       return rejectWithValue(error.message || "Failed to update avatar");
+    }
+  }
+);
+
+export const removeUserAvatar = createAsyncThunk(
+  "auth/removeAvatar",
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await account.get();
+      const prefs = user.prefs || {};
+      // Set avatar to null to remove it
+      await account.updatePrefs({ ...prefs, avatar: null });
+      const updatedUser = await account.get();
+      return updatedUser;
+    } catch (error) {
+      return rejectWithValue(error.message || "Failed to remove avatar");
     }
   }
 );
@@ -286,6 +301,18 @@ const authSlice = createSlice({
         state.message = "Avatar updated successfully!";
       })
       .addCase(updateUserAvatar.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeUserAvatar.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeUserAvatar.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.message = "Avatar removed successfully!";
+      })
+      .addCase(removeUserAvatar.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

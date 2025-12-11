@@ -133,13 +133,41 @@ const ExploreTopBar = ({
                   className="cursor-pointer"
                   onClick={() => navigate("/profile")}
                 >
-                  <span className="material-symbols-outlined mr-2 text-lg">
+                  <span className="material-symbols-outlined mr-2 !text-[16px]">
                     person
                   </span>
                   Profile
                 </DropdownMenuItem>
+
+                {/* Admin Dashboard Link */}
+                {(() => {
+                  const labels = user?.labels || [];
+                  const prefsRole = user?.prefs?.role;
+                  const prefsRoles = user?.prefs?.roles || [];
+                  const allRoles = [
+                    ...labels,
+                    ...(prefsRole ? [prefsRole] : []),
+                    ...(Array.isArray(prefsRoles) ? prefsRoles : []),
+                  ].map((r) => String(r).toLowerCase());
+
+                  if (allRoles.includes("admin")) {
+                    return (
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => navigate("/admin/dashboard")}
+                      >
+                        <span className="material-symbols-outlined mr-2 !text-[16px]">
+                          dashboard
+                        </span>
+                        Admin Dashboard
+                      </DropdownMenuItem>
+                    );
+                  }
+                  return null;
+                })()}
+
                 <DropdownMenuItem className="cursor-pointer">
-                  <span className="material-symbols-outlined mr-2 text-lg">
+                  <span className="material-symbols-outlined mr-2 !text-[16px]">
                     settings
                   </span>
                   Settings
@@ -151,14 +179,14 @@ const ExploreTopBar = ({
                 >
                   {theme === "light" ? (
                     <>
-                      <span className="material-symbols-outlined mr-2 text-lg">
+                      <span className="material-symbols-outlined mr-2 !text-[16px]">
                         dark_mode
                       </span>
                       Switch to Dark Mode
                     </>
                   ) : (
                     <>
-                      <span className="material-symbols-outlined mr-2 text-lg">
+                      <span className="material-symbols-outlined mr-2 !text-[16px]">
                         light_mode
                       </span>
                       Switch to Light Mode
@@ -170,7 +198,7 @@ const ExploreTopBar = ({
                   onClick={handleLogout}
                   className="text-destructive cursor-pointer"
                 >
-                  <span className="material-symbols-outlined mr-2 text-lg">
+                  <span className="material-symbols-outlined mr-2 !text-[16px]">
                     logout
                   </span>
                   Log out
@@ -196,14 +224,14 @@ const ExploreTopBar = ({
               >
                 {theme === "light" ? (
                   <>
-                    <span className="material-symbols-outlined mr-2 text-lg">
+                    <span className="material-symbols-outlined mr-2 !text-[16px]">
                       dark_mode
                     </span>
                     Switch to Dark Mode
                   </>
                 ) : (
                   <>
-                    <span className="material-symbols-outlined mr-2 text-lg">
+                    <span className="material-symbols-outlined mr-2 !text-[16px]">
                       light_mode
                     </span>
                     Switch to Light Mode
@@ -215,7 +243,7 @@ const ExploreTopBar = ({
                 onClick={() => navigate("/login")}
                 className="cursor-pointer text-primary"
               >
-                <span className="material-symbols-outlined mr-2 text-lg">
+                <span className="material-symbols-outlined mr-2 !text-[16px]">
                   login
                 </span>
                 Log In

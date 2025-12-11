@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "@/routes/AppRoutes";
 import { client } from "@/lib/appwrite";
 import { checkAuth } from "@/store/slices/authSlice";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const App = () => {
   const theme = useSelector((state) => state.theme.mode);
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <AppRoutes />
-      <Toaster />
+      <Toaster theme={theme} richColors position="top-right" />
     </BrowserRouter>
   );
 };

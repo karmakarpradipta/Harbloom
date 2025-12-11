@@ -5,9 +5,11 @@ import {
   updateUserName,
   updateUserPassword,
   updateUserAvatar,
+  removeUserAvatar,
   logoutUser,
   sendEmailVerification,
 } from "@/store/slices/authSlice";
+import { deleteFileFromUploadcare, extractUuidFromUrl } from "@/lib/uploadcare";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -29,9 +31,9 @@ import {
   LogOut,
   CheckCircle2,
   AlertCircle,
+  Trash2,
 } from "lucide-react";
-import { FileUploaderRegular } from "@uploadcare/react-uploader";
-import "@uploadcare/react-uploader/core.css";
+import UploadcareWrapper from "@/components/common/UploadcareWrapper";
 import {
   Dialog,
   DialogContent,
@@ -139,18 +141,47 @@ const Profile = () => {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex justify-center p-4">
-                    <FileUploaderRegular
-                      pubkey="8fd62d97f98920880622"
-                      classNameUploader="uc-light uc-purple"
-                      sourceList="local, camera, gdrive"
-                      filesViewMode="grid"
-                      onFileUploadSuccess={(fileInfo) => {
+                    <UploadcareWrapper
+                      onUploadSuccess={async (fileInfo) => {
+                        // Delete old avatar if exists
+                        if (user?.prefs?.avatar) {
+                          const oldUuid = extractUuidFromUrl(user.prefs.avatar);
+                          if (oldUuid) {
+                            await deleteFileFromUploadcare(oldUuid);
+                          }
+                        }
                         dispatch(
                           updateUserAvatar({ avatarUrl: fileInfo.cdnUrl })
                         );
                       }}
                     />
                   </div>
+                  {user?.prefs?.avatar && (
+                    <div className="flex justify-center pb-4">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={async () => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to remove your profile photo?"
+                            )
+                          ) {
+                            const oldUuid = extractUuidFromUrl(
+                              user.prefs.avatar
+                            );
+                            if (oldUuid) {
+                              await deleteFileFromUploadcare(oldUuid);
+                            }
+                            dispatch(removeUserAvatar());
+                          }
+                        }}
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Remove Current Photo
+                      </Button>
+                    </div>
+                  )}
                 </DialogContent>
               </Dialog>
             </div>
