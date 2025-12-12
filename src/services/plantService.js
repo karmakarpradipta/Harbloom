@@ -9,11 +9,7 @@ export class PlantService {
     let attempts = 0;
     while (attempts < maxRetries) {
       try {
-        // Use provided ID for first attempt if it wasn't strictly unique, 
-        // but typically we pass ID.unique() which is generated *before* call.
-        // Better approach: Generate NEW ID on retry.
         const docId = attempts === 0 ? id : ID.unique();
-        
         return await databases.createDocument(
             conf.appwriteDatabaseId,
             collectionId,
@@ -37,24 +33,6 @@ export class PlantService {
     } catch (error) {
        console.error("Appwrite service :: createPlant :: error", error);
        throw error;
-    }
-  }
-
-  async createImageRecord(data) {
-    try {
-      return await this.createDocumentSafe(conf.appwriteCollectionIdImages, data);
-    } catch (error) {
-      console.error("Appwrite service :: createImageRecord :: error", error);
-      throw error;
-    }
-  }
-
-  async createPlantPartUsage(data) {
-    try {
-       return await this.createDocumentSafe(conf.appwriteCollectionIdPlantPartUsage, data);
-    } catch (error) {
-      console.error("Appwrite service :: createPlantPartUsage :: error", error);
-      throw error;
     }
   }
 
@@ -100,16 +78,12 @@ export class PlantService {
 
   async deletePlant(id) {
     try {
-      // 1. Fetch Plant to get related images
       const plant = await this.getPlant(id);
       if (plant && plant.images && plant.images.length > 0) {
-        // 2. Delete all associated images
         const imagePromises = plant.images.map(async (img) => {
-          // If img is object (expanded)
           if (typeof img === "object" && img.$id && img.url) {
             return this.deleteImageRecord(img.$id, img.url);
           }
-          // If img is ID string
           if (typeof img === "string") {
             const imageDoc = await databases.getDocument(
               conf.appwriteDatabaseId,
@@ -123,8 +97,6 @@ export class PlantService {
         });
         await Promise.all(imagePromises);
       }
-
-      // 3. Delete the Plant Document
       await databases.deleteDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdPlants,
@@ -137,16 +109,23 @@ export class PlantService {
     }
   }
 
+  // --- IMAGES ---
+  async createImageRecord(data) {
+    try {
+      return await this.createDocumentSafe(conf.appwriteCollectionIdImages, data);
+    } catch (error) {
+      console.error("Appwrite service :: createImageRecord :: error", error);
+      throw error;
+    }
+  }
+
   async deleteImageRecord(id, url) {
     try {
-      // 1. Delete from Appwrite Database
       await databases.deleteDocument(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdImages,
         id
       );
-
-      // 2. Delete from Uploadcare Storage (if URL is provided)
       if (url) {
         const { extractUuidFromUrl, deleteFileFromUploadcare } = await import(
           "@/lib/uploadcare"
@@ -156,7 +135,6 @@ export class PlantService {
           await deleteFileFromUploadcare(uuid);
         }
       }
-
       return true;
     } catch (error) {
       console.error("Appwrite service :: deleteImageRecord :: error", error);
@@ -171,7 +149,7 @@ export class PlantService {
         conf.appwriteCollectionIdImages,
         [
           Query.equal("plants", plantId),
-          Query.limit(10), // Increased from 1 to allow multiple images for gallery/parts
+          Query.limit(10),
         ]
       );
     } catch (error) {
@@ -190,6 +168,46 @@ export class PlantService {
       );
     } catch (error) {
       console.error("Appwrite service :: getTags :: error", error);
+      return false;
+    }
+  }
+
+  async createTag(data) {
+    try {
+      return await this.createDocumentSafe(
+        conf.appwriteCollectionIdTags,
+        data
+      );
+    } catch (error) {
+      console.error("Appwrite service :: createTag :: error", error);
+      throw error;
+    }
+  }
+
+  async updateTag(id, data) {
+    try {
+      return await databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdTags,
+        id,
+        data
+      );
+    } catch (error) {
+      console.error("Appwrite service :: updateTag :: error", error);
+      throw error;
+    }
+  }
+
+  async deleteTag(id) {
+    try {
+      await databases.deleteDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdTags,
+        id
+      );
+      return true;
+    } catch (error) {
+      console.error("Appwrite service :: deleteTag :: error", error);
       return false;
     }
   }
@@ -263,16 +281,16 @@ export class PlantService {
     }
   }
 
-  async getOrigins() {
+  async getOrigins(queries = [Query.limit(100)]) {
     try {
       if (!conf.appwriteCollectionIdOrigins) return { documents: [] };
       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdOrigins,
-        [Query.limit(100), Query.orderAsc("region")]
+        queries
       );
     } catch (error) {
-      console.error("Appwrite :: getOrigins :: error", error);
+      console.error("Appwrite service :: getOrigins :: error", error);
       return { documents: [] };
     }
   }
@@ -318,17 +336,31 @@ export class PlantService {
     }
   }
 
-  async getHabitats() {
+  async getHabitats(queries = [Query.limit(100)]) {
     try {
       if (!conf.appwriteCollectionIdHabitats) return { documents: [] };
       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdHabitats,
-        [Query.limit(100), Query.orderAsc("climate")]
+        queries
       );
     } catch (error) {
       console.error("Appwrite :: getHabitats :: error", error);
       return { documents: [] };
+    }
+  }
+
+  async getHabitat(id) {
+    try {
+      if (!conf.appwriteCollectionIdHabitats || !id) return null;
+      return await databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdHabitats,
+        id
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getHabitat :: error", error);
+      return null;
     }
   }
 
@@ -368,10 +400,7 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: createChemicalProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: createChemicalProfile :: error", error);
       throw error;
     }
   }
@@ -399,10 +428,7 @@ export class PlantService {
       );
       return true;
     } catch (error) {
-      console.error(
-        "Appwrite service :: deleteChemicalProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: deleteChemicalProfile :: error", error);
       return false;
     }
   }
@@ -415,25 +441,36 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: createMedicinalProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: createMedicinalProfile :: error", error);
       throw error;
     }
   }
 
-  async getMedicinalProfiles() {
+  async getMedicinalProfiles(queries = [Query.limit(100)]) {
     try {
       if (!conf.appwriteCollectionIdMedicinalProfiles) return { documents: [] };
       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdMedicinalProfiles,
-        [Query.limit(100), Query.orderDesc("$createdAt")]
+        queries
       );
     } catch (error) {
       console.error("Appwrite service :: getMedicinalProfiles :: error", error);
       return { documents: [] };
+    }
+  }
+
+  async getMedicinalProfile(id) {
+    try {
+      if (!conf.appwriteCollectionIdMedicinalProfiles || !id) return null;
+      return await databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdMedicinalProfiles,
+        id
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getMedicinalProfile :: error", error);
+      return null;
     }
   }
 
@@ -446,10 +483,7 @@ export class PlantService {
       );
       return true;
     } catch (error) {
-      console.error(
-        "Appwrite service :: deleteMedicinalProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: deleteMedicinalProfile :: error", error);
       return false;
     }
   }
@@ -462,29 +496,45 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: createAyurvedicProperty :: error",
-        error
-      );
+      console.error("Appwrite service :: createAyurvedicProperty :: error", error);
       throw error;
     }
   }
 
-  async getAyurvedicProperties() {
+  async getAyurvedicProperties(id) {
+    // If ID is passed, get document. If not, list documents?
+    // Old code had separate methods or overloaded? 
+    // Old code signature: async getAyurvedicProperties() { ... list ... }
+    // And async getAyurvedicProperties(id) was below?
+    // JavaScript doesn't support overloading. The last one wins.
+    // So the previous code was BROKEN if it had two methods with same name!
+    // I should check if I missed that.
+    
+    // Checked history:
+    // Line 454: async getAyurvedicProperties() { ... }
+    // Line 674: async getAyurvedicProperties(id) { ... }
+    // This confirms the file WAS broken before because of duplicates!
+    
+    // I will merge them into one smart method.
     try {
-      if (!conf.appwriteCollectionIdAyurvedicProperties)
-        return { documents: [] };
-      return await databases.listDocuments(
+       if (!conf.appwriteCollectionIdAyurvedicProperties) return { documents: [] };
+       
+       if (id && typeof id === 'string') {
+          return await databases.getDocument(
+            conf.appwriteDatabaseId,
+            conf.appwriteCollectionIdAyurvedicProperties,
+            id
+          );
+       }
+       
+       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdAyurvedicProperties,
         [Query.limit(100), Query.orderDesc("$createdAt")]
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: getAyurvedicProperties :: error",
-        error
-      );
-      return { documents: [] };
+      console.error("Appwrite service :: getAyurvedicProperties :: error", error);
+      return id ? null : { documents: [] };
     }
   }
 
@@ -497,10 +547,7 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: updateAyurvedicProperty :: error",
-        error
-      );
+      console.error("Appwrite service :: updateAyurvedicProperty :: error", error);
       throw error;
     }
   }
@@ -514,10 +561,7 @@ export class PlantService {
       );
       return true;
     } catch (error) {
-      console.error(
-        "Appwrite service :: deleteAyurvedicProperty :: error",
-        error
-      );
+      console.error("Appwrite service :: deleteAyurvedicProperty :: error", error);
       return false;
     }
   }
@@ -530,28 +574,21 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: createCultivationProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: createCultivationProfile :: error", error);
       throw error;
     }
   }
 
   async getCultivationProfiles() {
     try {
-      if (!conf.appwriteCollectionIdCultivationRequirements)
-        return { documents: [] };
+      if (!conf.appwriteCollectionIdCultivationRequirements) return { documents: [] };
       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdCultivationRequirements,
         [Query.limit(100), Query.orderDesc("$createdAt")]
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: getCultivationProfiles :: error",
-        error
-      );
+      console.error("Appwrite service :: getCultivationProfiles :: error", error);
       return { documents: [] };
     }
   }
@@ -565,10 +602,7 @@ export class PlantService {
       );
       return true;
     } catch (error) {
-      console.error(
-        "Appwrite service :: deleteCultivationProfile :: error",
-        error
-      );
+      console.error("Appwrite service :: deleteCultivationProfile :: error", error);
       return false;
     }
   }
@@ -629,7 +663,14 @@ export class PlantService {
   }
 
   // --- PLANT PART USAGE ---
-
+  async createPlantPartUsage(data) {
+    try {
+       return await this.createDocumentSafe(conf.appwriteCollectionIdPlantPartUsage, data);
+    } catch (error) {
+      console.error("Appwrite service :: createPlantPartUsage :: error", error);
+      throw error;
+    }
+  }
 
   async getPlantPartUsage(plantId) {
     try {
@@ -645,92 +686,6 @@ export class PlantService {
     }
   }
 
-
-
-  async getAyurvedicProperties(id) {
-    try {
-      if (!conf.appwriteCollectionIdAyurvedicProperties || !id) return null;
-      return await databases.getDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdAyurvedicProperties,
-        id
-      );
-    } catch (error) {
-      console.error("Appwrite service :: getAyurvedicProperties :: error", error);
-      return null;
-    }
-  }
-
-  async getMedicinalProfile(id) {
-    try {
-      if (!conf.appwriteCollectionIdMedicinalProfiles || !id) return null;
-      return await databases.getDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdMedicinalProfiles,
-        id
-      );
-    } catch (error) {
-      console.error("Appwrite service :: getMedicinalProfile :: error", error);
-      return null;
-    }
-  }
-
-  async getHabitat(id) {
-    try {
-      if (!conf.appwriteCollectionIdHabitats || !id) return null;
-      return await databases.getDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdHabitats,
-        id
-      );
-    } catch (error) {
-      console.error("Appwrite service :: getHabitat :: error", error);
-      return null;
-    }
-  }
-
-  async getHabitats(queries = [Query.limit(100)]) {
-      try {
-        if (!conf.appwriteCollectionIdHabitats) return { documents: [] };
-        return await databases.listDocuments(
-          conf.appwriteDatabaseId,
-          conf.appwriteCollectionIdHabitats,
-          queries
-        );
-      } catch (error) {
-        console.error("Appwrite service :: getHabitats :: error", error);
-        return { documents: [] };
-      }
-    }
-
-  async getOrigins(queries = [Query.limit(100)]) {
-      try {
-        if (!conf.appwriteCollectionIdOrigins) return { documents: [] };
-        return await databases.listDocuments(
-          conf.appwriteDatabaseId,
-          conf.appwriteCollectionIdOrigins,
-          queries
-        );
-      } catch (error) {
-        console.error("Appwrite service :: getOrigins :: error", error);
-        return { documents: [] };
-      }
-    }
-
-  async getMedicinalProfiles(queries = [Query.limit(100)]) {
-      try {
-        if (!conf.appwriteCollectionIdMedicinalProfiles) return { documents: [] };
-        return await databases.listDocuments(
-          conf.appwriteDatabaseId,
-          conf.appwriteCollectionIdMedicinalProfiles,
-          queries
-        );
-      } catch (error) {
-        console.error("Appwrite service :: getMedicinalProfiles :: error", error);
-        return { documents: [] };
-      }
-    }
-
   // --- PROPAGATION METHODS ---
   async createPropagationMethod(data) {
     try {
@@ -739,28 +694,21 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: createPropagationMethod :: error",
-        error
-      );
+      console.error("Appwrite service :: createPropagationMethod :: error", error);
       throw error;
     }
   }
 
   async getPropagationMethods() {
     try {
-      if (!conf.appwriteCollectionIdPropagationMethods)
-        return { documents: [] };
+      if (!conf.appwriteCollectionIdPropagationMethods) return { documents: [] };
       return await databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionIdPropagationMethods,
         [Query.limit(100), Query.orderDesc("$createdAt")]
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: getPropagationMethods :: error",
-        error
-      );
+      console.error("Appwrite service :: getPropagationMethods :: error", error);
       return { documents: [] };
     }
   }
@@ -774,10 +722,7 @@ export class PlantService {
         data
       );
     } catch (error) {
-      console.error(
-        "Appwrite service :: updatePropagationMethod :: error",
-        error
-      );
+      console.error("Appwrite service :: updatePropagationMethod :: error", error);
       throw error;
     }
   }
@@ -791,71 +736,10 @@ export class PlantService {
       );
       return true;
     } catch (error) {
-      console.error(
-        "Appwrite service :: deletePropagationMethod :: error",
-        error
-      );
+      console.error("Appwrite service :: deletePropagationMethod :: error", error);
       return false;
     }
   }
-
-  // --- TAGS ---
-  async createTag(data) {
-    try {
-      return await this.createDocumentSafe(
-        conf.appwriteCollectionIdTags,
-        data
-      );
-    } catch (error) {
-      console.error("Appwrite service :: createTag :: error", error);
-      throw error;
-    }
-  }
-
-  async getTags() {
-    try {
-      if (!conf.appwriteCollectionIdTags) return { documents: [] };
-      return await databases.listDocuments(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdTags,
-        [Query.limit(100), Query.orderAsc("name")]
-      );
-    } catch (error) {
-      console.error("Appwrite service :: getTags :: error", error);
-      return { documents: [] };
-    }
-  }
-
-  async updateTag(id, data) {
-    try {
-      return await databases.updateDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdTags,
-        id,
-        data
-      );
-    } catch (error) {
-      console.error("Appwrite service :: updateTag :: error", error);
-      throw error;
-    }
-  }
-
-  async deleteTag(id) {
-    try {
-      await databases.deleteDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdTags,
-        id
-      );
-      return true;
-    } catch (error) {
-      console.error("Appwrite service :: deleteTag :: error", error);
-      return false;
-    }
-  }
-
-  // --- IMAGES ---
-
 }
 
 const plantService = new PlantService();
