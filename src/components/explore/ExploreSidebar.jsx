@@ -20,7 +20,7 @@ const ExploreSidebar = () => {
   const { filters, selectedFilters, toggleFamily, toggleHabitat, toggleOrigin, toggleMedicinalUsage, resetFilters } = useExplore();
 
   return (
-    <Sidebar collapsible="offcanvas" variant="overlay" className="border-r border-border bg-card/50 backdrop-blur-xl z-[45]">
+    <Sidebar collapsible="offcanvas" className="border-r border-border bg-card/50 backdrop-blur-xl z-[45]">
       <SidebarHeader className="h-20 flex justify-center px-6">
         <div className="flex items-center gap-2 overflow-hidden">
           <span className="material-symbols-outlined text-primary text-3xl shrink-0">
