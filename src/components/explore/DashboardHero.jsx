@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
 
 const DashboardHero = () => {
+  const { user } = useSelector((state) => state.auth);
+  const [greeting, setGreeting] = useState("Good Evening");
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning");
+    else if (hour < 18) setGreeting("Good Afternoon");
+    else setGreeting("Good Evening");
+  }, []);
+
   return (
     <div className="relative w-full max-w-7xl mx-auto rounded-3xl overflow-hidden bg-gradient-to-r from-green-50 to-emerald-100 dark:from-green-950/30 dark:to-emerald-950/30 border border-green-100 dark:border-green-900/50 p-6 sm:p-10 md:p-14 lg:p-20 mb-8">
       
@@ -11,7 +22,7 @@ const DashboardHero = () => {
 
       <div className="relative z-10 max-w-3xl">
         <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground leading-tight mb-4">
-          Good Evening, User <span className="animate-pulse">🌿</span>
+          {greeting}, {user?.name || "Explorer"} <span className="animate-pulse">🌿</span>
         </h1>
 
         <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 md:mb-10 text-balance">

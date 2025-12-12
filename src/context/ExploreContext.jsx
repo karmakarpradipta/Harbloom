@@ -20,6 +20,7 @@ export const ExploreProvider = ({ children }) => {
     habitats: [],
     origins: [],
     medicinalUsages: [],
+    tags: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -28,11 +29,12 @@ export const ExploreProvider = ({ children }) => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const [familiesRes, habitatsRes, originsRes, medicinalRes] = await Promise.all([
+        const [familiesRes, habitatsRes, originsRes, medicinalRes, tagsRes] = await Promise.all([
           plantService.getFamilies([Query.limit(100), Query.orderAsc("name")]),
           plantService.getHabitats([Query.limit(100)]),
           plantService.getOrigins([Query.limit(100), Query.orderAsc("name")]),
           plantService.getMedicinalProfiles([Query.limit(100)]),
+          plantService.getTags([Query.limit(100), Query.orderAsc("name")]),
         ]);
 
         // Process Medicinal Profiles to extract unique "Systems" or "Actions" as usages
@@ -55,6 +57,7 @@ export const ExploreProvider = ({ children }) => {
           habitats: habitatsRes?.documents || [],
           origins: originsRes?.documents || [],
           medicinalUsages: Array.from(uniqueDirectUsages).sort(),
+          tags: tagsRes?.documents || [],
           search: "",
         });
       } catch (error) {
@@ -115,6 +118,18 @@ export const ExploreProvider = ({ children }) => {
     });
   };
 
+  const toggleTag = (tagId) => {
+      setSelectedFilters((prev) => {
+        const isSelected = prev.tags.includes(tagId);
+        return {
+          ...prev,
+          tags: isSelected
+            ? prev.tags.filter((id) => id !== tagId)
+            : [...prev.tags, tagId],
+      };
+    });
+  };
+
   const resetFilters = () => {
     setSelectedFilters({ families: [], habitats: [], origins: [], medicinalUsages: [] });
   };
@@ -127,7 +142,9 @@ export const ExploreProvider = ({ children }) => {
         toggleFamily,
         toggleHabitat,
         toggleOrigin,
+        toggleOrigin,
         toggleMedicinalUsage,
+        toggleTag,
         resetFilters,
         loading,
       }}

@@ -26,6 +26,12 @@ const PlantGrid = () => {
         if (selectedFilters.habitats.length > 0) {
             queries.push(Query.equal("habitats", selectedFilters.habitats));
         }
+        if (selectedFilters.tags && selectedFilters.tags.length > 0) {
+            // Filter by selected tags
+            // Appwrite 'tags' relationship - using 'equal' with array acts as OR logic usually, 
+            // but for array attributes it might check for ANY.
+            queries.push(Query.equal("tags", selectedFilters.tags));
+        }
 
         // Parallel Fetch: Plants + Tags
         const [plantsRes, tagsRes] = await Promise.all([
