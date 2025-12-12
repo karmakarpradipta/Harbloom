@@ -629,19 +629,7 @@ export class PlantService {
   }
 
   // --- PLANT PART USAGE ---
-  async createPlantPartUsage(data) {
-    try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdPlantPartUsage,
-        ID.unique(),
-        data
-      );
-    } catch (error) {
-      console.error("Appwrite service :: createPlantPartUsage :: error", error);
-      throw error;
-    }
-  }
+
 
   async getPlantPartUsage(plantId) {
     try {
@@ -657,19 +645,7 @@ export class PlantService {
     }
   }
 
-  async getPlantParts() {
-    try {
-      if (!conf.appwriteCollectionIdPlantParts) return { documents: [] };
-      return await databases.listDocuments(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdPlantParts,
-        [Query.limit(100)] 
-      );
-    } catch (error) {
-      console.error("Appwrite service :: getPlantParts :: error", error);
-      return { documents: [] };
-    }
-  }
+
 
   async getAyurvedicProperties(id) {
     try {
@@ -879,19 +855,7 @@ export class PlantService {
   }
 
   // --- IMAGES ---
-  async createImageRecord(data) {
-    try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdImages,
-        ID.unique(),
-        data
-      );
-    } catch (error) {
-      console.error("Appwrite service :: createImageRecord :: error", error);
-      throw error;
-    }
-  }
+
 }
 
 const plantService = new PlantService();
