@@ -334,9 +334,27 @@ const AddPlant = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      // 1. Create Plant First (to get ID)
+      // Helper to ensure we only send IDs (strings), not header objects
+      const unwrapId = (val) => {
+        if (!val) return null;
+        if (typeof val === "string") return val;
+        if (typeof val === "object" && val.$id) return val.$id;
+        if (typeof val === "object" && val.value) return val.value; // Handle {label, value}
+        return null;
+      };
+
+      // Helper for arrays of IDs
+      const unwrapIds = (val) => {
+        if (!val) return [];
+        if (Array.isArray(val)) {
+            return val.map(item => unwrapId(item)).filter(id => id !== null);
+        }
+        return [];
+      };
+
       const selectedFamily = families.find((f) => f.value === data.family);
 
+      // Construct payload with ONLY IDs for relationships
       const plantData = {
         scientificName: data.scientific_name,
         familyName: selectedFamily ? selectedFamily.label : null,
@@ -345,18 +363,22 @@ const AddPlant = () => {
           : [],
         genus: data.genus,
         species: data.species,
-        families: data.family,
-        origins: data.origin || null,
-        habitats: data.habitat || null,
+        
+        // Relationships: Ensure these are pure ID strings
+        families: unwrapId(data.family),
+        origins: unwrapId(data.origin),
+        habitats: unwrapId(data.habitat),
+        chemicalProfiles: unwrapId(data.chemical_profile),
+        medicinalProfiles: unwrapId(data.medicinal_profile),
+        ayurvedicProperties: unwrapId(data.ayurvedic_profile), // Check field name compatibility
+        cultivationRequirements: unwrapId(data.cultivation_profile),
+        
         plant_type: data.plant_type,
         short_description: data.short_description,
         full_description: data.full_description,
-        chemicalProfiles: data.chemical_profile || null,
-        medicinalProfiles: data.medicinal_profile || null,
-        ayurvedicProperties: data.ayurveda || null,
-        cultivationRequirements: data.cultivation_profile || null,
-        tags: data.tags || [],
-        images: [], // Initialize empty, update later
+        
+        tags: unwrapIds(data.tags),
+        images: [], 
       };
 
       const newPlant = await plantService.createPlant(plantData);

@@ -4,13 +4,14 @@ import { ID, Query } from "appwrite";
 
 export class PlantService {
   // Helper for safe creation with retries
-  async createDocumentSafe(collectionId, data, id = ID.unique()) {
+  async createDocumentSafe(collectionId, data) {
     const maxRetries = 3;
     let attempts = 0;
 
     while (attempts < maxRetries) {
       try {
-        const docId = attempts === 0 ? id : ID.unique();
+        // Always generate a fresh ID on every attempt
+        const docId = ID.unique();
 
         return await databases.createDocument(
             conf.appwriteDatabaseId,
@@ -21,12 +22,10 @@ export class PlantService {
       } catch (error) {
         const isCollision =
           error.code === 409 ||
-          error.type === "document_already_exists" ||
-          error.message?.includes("already") ||
-          error.message?.includes("exists");
+          error.type === "document_already_exists";
 
         if (isCollision && attempts < maxRetries - 1) {
-             console.warn(`Appwrite service :: createDocumentSafe :: ID collision on ${collectionId}, retrying... (Attempt ${attempts + 1})`);
+             console.warn(`Appwrite service :: createDocumentSafe :: ID collision, retrying... (Attempt ${attempts + 1})`);
              attempts++;
              continue;
         }
