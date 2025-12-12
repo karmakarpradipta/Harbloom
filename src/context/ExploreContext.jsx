@@ -10,12 +10,16 @@ export const ExploreProvider = ({ children }) => {
   const [filters, setFilters] = useState({
     families: [],
     habitats: [],
+    origins: [],
+    medicinalUsages: [],
     search: "",
   });
   
   const [selectedFilters, setSelectedFilters] = useState({
     families: [],
     habitats: [],
+    origins: [],
+    medicinalUsages: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -24,14 +28,33 @@ export const ExploreProvider = ({ children }) => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const [familiesRes, habitatsRes] = await Promise.all([
+        const [familiesRes, habitatsRes, originsRes, medicinalRes] = await Promise.all([
           plantService.getFamilies([Query.limit(100), Query.orderAsc("name")]),
           plantService.getHabitats([Query.limit(100)]),
+          plantService.getOrigins([Query.limit(100), Query.orderAsc("name")]),
+          plantService.getMedicinalProfiles([Query.limit(100)]),
         ]);
+
+        // Process Medicinal Profiles to extract unique "Systems" or "Actions" as usages
+        // Assuming medicinalRes.documents contains profiles with a 'systems' array or 'actions' array
+        // We'll aggregate unique systems for now as "Medicinal Usage"
+        const uniqueDirectUsages = new Set();
+        (medicinalRes?.documents || []).forEach(doc => {
+            if (doc.systems && Array.isArray(doc.systems)) {
+                doc.systems.forEach(sys => uniqueDirectUsages.add(sys));
+            }
+             // Optional: Add Actions too if requested
+             // if (doc.actions && Array.isArray(doc.actions)) {
+             //   doc.actions.forEach(action => uniqueDirectUsages.add(action));
+             // }
+        });
+
 
         setFilters({
           families: familiesRes?.documents || [],
           habitats: habitatsRes?.documents || [],
+          origins: originsRes?.documents || [],
+          medicinalUsages: Array.from(uniqueDirectUsages).sort(),
           search: "",
         });
       } catch (error) {
@@ -64,12 +87,36 @@ export const ExploreProvider = ({ children }) => {
           habitats: isSelected
             ? prev.habitats.filter((id) => id !== habitatId)
             : [...prev.habitats, habitatId],
-        };
-      });
-    };
+      };
+    });
+  };
+
+  const toggleOrigin = (originId) => {
+      setSelectedFilters((prev) => {
+        const isSelected = prev.origins.includes(originId);
+        return {
+          ...prev,
+          origins: isSelected
+            ? prev.origins.filter((id) => id !== originId)
+            : [...prev.origins, originId],
+      };
+    });
+  };
+
+  const toggleMedicinalUsage = (usage) => {
+      setSelectedFilters((prev) => {
+        const isSelected = prev.medicinalUsages.includes(usage);
+        return {
+          ...prev,
+          medicinalUsages: isSelected
+            ? prev.medicinalUsages.filter((u) => u !== usage)
+            : [...prev.medicinalUsages, usage],
+      };
+    });
+  };
 
   const resetFilters = () => {
-    setSelectedFilters({ families: [], habitats: [] });
+    setSelectedFilters({ families: [], habitats: [], origins: [], medicinalUsages: [] });
   };
 
   return (
@@ -79,6 +126,8 @@ export const ExploreProvider = ({ children }) => {
         selectedFilters,
         toggleFamily,
         toggleHabitat,
+        toggleOrigin,
+        toggleMedicinalUsage,
         resetFilters,
         loading,
       }}

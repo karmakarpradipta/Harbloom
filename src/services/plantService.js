@@ -3,17 +3,57 @@ import { databases } from "@/lib/appwrite";
 import { ID, Query } from "appwrite";
 
 export class PlantService {
+  // Helper for safe creation with retries
+  async createDocumentSafe(collectionId, data, id = ID.unique()) {
+    const maxRetries = 3;
+    let attempts = 0;
+    while (attempts < maxRetries) {
+      try {
+        // Use provided ID for first attempt if it wasn't strictly unique, 
+        // but typically we pass ID.unique() which is generated *before* call.
+        // Better approach: Generate NEW ID on retry.
+        const docId = attempts === 0 ? id : ID.unique();
+        
+        return await databases.createDocument(
+            conf.appwriteDatabaseId,
+            collectionId,
+            docId,
+            data
+        );
+      } catch (error) {
+        if (error.code === 409 && attempts < maxRetries - 1) {
+             console.warn(`Appwrite service :: createDocumentSafe :: ID collision on ${collectionId}, retrying... (Attempt ${attempts + 1})`);
+             attempts++;
+             continue;
+        }
+        throw error;
+      }
+    }
+  }
+
   async createPlant(plantData) {
     try {
-      const docId = ID.unique();
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
-        conf.appwriteCollectionIdPlants,
-        docId,
-        plantData
-      );
+      return await this.createDocumentSafe(conf.appwriteCollectionIdPlants, plantData);
     } catch (error) {
-      console.error("Appwrite service :: createPlant :: error", error);
+       console.error("Appwrite service :: createPlant :: error", error);
+       throw error;
+    }
+  }
+
+  async createImageRecord(data) {
+    try {
+      return await this.createDocumentSafe(conf.appwriteCollectionIdImages, data);
+    } catch (error) {
+      console.error("Appwrite service :: createImageRecord :: error", error);
+      throw error;
+    }
+  }
+
+  async createPlantPartUsage(data) {
+    try {
+       return await this.createDocumentSafe(conf.appwriteCollectionIdPlantPartUsage, data);
+    } catch (error) {
+      console.error("Appwrite service :: createPlantPartUsage :: error", error);
       throw error;
     }
   }
@@ -131,7 +171,7 @@ export class PlantService {
         conf.appwriteCollectionIdImages,
         [
           Query.equal("plants", plantId),
-          Query.limit(1), // Just need one for thumbnail
+          Query.limit(10), // Increased from 1 to allow multiple images for gallery/parts
         ]
       );
     } catch (error) {
@@ -213,10 +253,8 @@ export class PlantService {
   // --- ORIGINS ---
   async createOrigin(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdOrigins,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -270,10 +308,8 @@ export class PlantService {
   // --- HABITATS ---
   async createHabitat(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdHabitats,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -327,10 +363,8 @@ export class PlantService {
   // --- CHEMICAL PROFILES ---
   async createChemicalProfile(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdChemicalProfiles,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -376,10 +410,8 @@ export class PlantService {
   // --- MEDICINAL PROFILES ---
   async createMedicinalProfile(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdMedicinalProfiles,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -425,10 +457,8 @@ export class PlantService {
   // --- AYURVEDIC PROPERTIES ---
   async createAyurvedicProperty(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdAyurvedicProperties,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -495,10 +525,8 @@ export class PlantService {
   // --- CULTIVATION PROFILES ---
   async createCultivationProfile(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdCultivationRequirements,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -548,10 +576,8 @@ export class PlantService {
   // --- PLANT PARTS ---
   async createPlantPart(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdPlantParts,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -617,13 +643,123 @@ export class PlantService {
     }
   }
 
+  async getPlantPartUsage(plantId) {
+    try {
+      if (!conf.appwriteCollectionIdPlantPartUsage) return { documents: [] };
+      return await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdPlantPartUsage,
+        [Query.equal("plants", plantId), Query.limit(100)]
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getPlantPartUsage :: error", error);
+      return { documents: [] };
+    }
+  }
+
+  async getPlantParts() {
+    try {
+      if (!conf.appwriteCollectionIdPlantParts) return { documents: [] };
+      return await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdPlantParts,
+        [Query.limit(100)] 
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getPlantParts :: error", error);
+      return { documents: [] };
+    }
+  }
+
+  async getAyurvedicProperties(id) {
+    try {
+      if (!conf.appwriteCollectionIdAyurvedicProperties || !id) return null;
+      return await databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdAyurvedicProperties,
+        id
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getAyurvedicProperties :: error", error);
+      return null;
+    }
+  }
+
+  async getMedicinalProfile(id) {
+    try {
+      if (!conf.appwriteCollectionIdMedicinalProfiles || !id) return null;
+      return await databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdMedicinalProfiles,
+        id
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getMedicinalProfile :: error", error);
+      return null;
+    }
+  }
+
+  async getHabitat(id) {
+    try {
+      if (!conf.appwriteCollectionIdHabitats || !id) return null;
+      return await databases.getDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteCollectionIdHabitats,
+        id
+      );
+    } catch (error) {
+      console.error("Appwrite service :: getHabitat :: error", error);
+      return null;
+    }
+  }
+
+  async getHabitats(queries = [Query.limit(100)]) {
+      try {
+        if (!conf.appwriteCollectionIdHabitats) return { documents: [] };
+        return await databases.listDocuments(
+          conf.appwriteDatabaseId,
+          conf.appwriteCollectionIdHabitats,
+          queries
+        );
+      } catch (error) {
+        console.error("Appwrite service :: getHabitats :: error", error);
+        return { documents: [] };
+      }
+    }
+
+  async getOrigins(queries = [Query.limit(100)]) {
+      try {
+        if (!conf.appwriteCollectionIdOrigins) return { documents: [] };
+        return await databases.listDocuments(
+          conf.appwriteDatabaseId,
+          conf.appwriteCollectionIdOrigins,
+          queries
+        );
+      } catch (error) {
+        console.error("Appwrite service :: getOrigins :: error", error);
+        return { documents: [] };
+      }
+    }
+
+  async getMedicinalProfiles(queries = [Query.limit(100)]) {
+      try {
+        if (!conf.appwriteCollectionIdMedicinalProfiles) return { documents: [] };
+        return await databases.listDocuments(
+          conf.appwriteDatabaseId,
+          conf.appwriteCollectionIdMedicinalProfiles,
+          queries
+        );
+      } catch (error) {
+        console.error("Appwrite service :: getMedicinalProfiles :: error", error);
+        return { documents: [] };
+      }
+    }
+
   // --- PROPAGATION METHODS ---
   async createPropagationMethod(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdPropagationMethods,
-        ID.unique(),
         data
       );
     } catch (error) {
@@ -690,10 +826,8 @@ export class PlantService {
   // --- TAGS ---
   async createTag(data) {
     try {
-      return await databases.createDocument(
-        conf.appwriteDatabaseId,
+      return await this.createDocumentSafe(
         conf.appwriteCollectionIdTags,
-        ID.unique(),
         data
       );
     } catch (error) {

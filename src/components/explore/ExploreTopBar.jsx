@@ -15,10 +15,9 @@ import { toggleTheme } from "@/store/slices/themeSlice";
 import { Separator } from "@/components/ui/separator";
 import { logoutUser } from "@/store/slices/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const ExploreTopBar = ({
-  toggleSidebar,
-  isSidebarOpen,
   showSidebarToggle = true,
 }) => {
   const theme = useSelector((state) => state.theme.mode);
@@ -43,35 +42,25 @@ const ExploreTopBar = ({
     <header className="sticky top-0 z-50 flex h-20 items-center justify-between gap-4 border-b border-border bg-background/80 px-4 md:px-6 backdrop-blur-xl">
       {/* Left: Mobile Toggle & Brand */}
       <div className="flex items-center gap-2 md:gap-4 min-w-fit">
-        {/* Toggle Button: Only if TopBar Toggle is enabled AND Sidebar is closed */}
-        {!isSidebarOpen && showSidebarToggle && (
-          <motion.div layoutId="menu-toggle-button">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleSidebar}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <span className="material-symbols-outlined">menu</span>
-            </Button>
-          </motion.div>
+        {/* Toggle Button: Only if TopBar Toggle is enabled */}
+        {showSidebarToggle && (
+            <SidebarTrigger />
         )}
 
         {/* Logo: Always navigates to Home */}
-        {(!isSidebarOpen || !showSidebarToggle) && (
-          <motion.div
-            className="flex items-center gap-2 select-none cursor-pointer"
-            layoutId="brand-logo"
-            onClick={() => navigate("/home")}
-          >
-            <span className="material-symbols-outlined text-primary text-3xl">
-              spa
-            </span>
-            <span className="text-2xl font-serif font-bold tracking-tight text-foreground hidden md:block">
-              Harbloom
-            </span>
-          </motion.div>
-        )}
+        {/* Logo: Always navigates to Home */}
+        <motion.div
+           className="flex items-center gap-2 select-none cursor-pointer"
+           layoutId="brand-logo"
+           onClick={() => navigate("/home")}
+         >
+           <span className="material-symbols-outlined text-primary text-3xl">
+             spa
+           </span>
+           <span className="text-2xl font-serif font-bold tracking-tight text-foreground hidden md:block">
+             Harbloom
+           </span>
+         </motion.div>
       </div>
 
       {/* Center: Search Bar */}

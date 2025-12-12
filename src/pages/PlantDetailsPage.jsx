@@ -13,6 +13,9 @@ import {
   Beaker,
   Sun,
   Wind,
+  Layers,
+  SunMedium,
+  CloudRain,
   Info,
   Loader2,
 } from "lucide-react";
@@ -39,35 +42,40 @@ const PlantDetailsPage = () => {
       setIsLoading(true);
       console.log("Fetching details for plant ID:", id); // DEBUG LOG
       try {
-        // Parallel Fetch: Plant Doc + Images + Tags Lookup
-        const [plantDoc, imagesRes, tagsRes] = await Promise.all([
+        // Parallel Fetch: Plant Doc + Images + Tags Lookup + Part Usage + Parts Lookup
+        const [plantRes, imagesRes, tagsRes, partsRes, allPartsRes] = await Promise.all([
              plantService.getPlant(id),
              plantService.getPlantImages(id),
-             plantService.getTags()
+             plantService.getTags(),
+             plantService.getPlantPartUsage(id),
+             plantService.getPlantParts(),
         ]);
         
-        console.log("Fetched plant doc:", plantDoc); // DEBUG LOG
+        console.log("Fetched plant doc:", plantRes); // DEBUG LOG
         
-        if (!plantDoc) {
+        if (!plantRes) {
           console.warn("Plant doc not found or error in fetch");
           setIsLoading(false);
           return;
         }
 
-        // Create Tags Map
-        const localTagsMap = {};
-        if (tagsRes && tagsRes.documents) {
-            tagsRes.documents.forEach(tag => {
-                localTagsMap[tag.$id] = tag.name;
-            });
-        }
+        if (plantRes) {
+          const images = imagesRes?.documents || [];
+          // Helper to get image URL safely
+          const getImgUrl = (img) => img.url || "";
+          
+          const imageUrls = images.map(getImgUrl).filter(Boolean);
+          const coverImage = imageUrls[0] || "https://images.unsplash.com/photo-1546237769-1f487e413000?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3";
 
-        const images = imagesRes?.documents?.map(img => img.url) || [];
-        const coverImage = images[0] || "https://images.unsplash.com/photo-1546237769-1f487e413000?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3"; 
+          // Process Tags (Name Resolution)
+          const rawTags = plantRes.tags || [];
+          const tagsList = tagsRes?.documents || [];
+          const localTagsMap = tagsList.reduce((acc, tag) => {
+            acc[tag.$id] = tag.name;
+            return acc;
+          }, {});
 
-        // Process Tags
-        const rawTags = plantDoc.tags || [];
-        const visibleTags = rawTags.map(t => {
+          const visibleTags = rawTags.map(t => {
             let tagId = t;
             if (typeof t === 'object' && t.name) return t.name;
             if (typeof t === 'object' && t.$id) tagId = t.$id;
@@ -79,52 +87,161 @@ const PlantDetailsPage = () => {
                 return tagId;
             }
             return null;
-        }).filter(Boolean);
+          }).filter(Boolean);
 
+          // Fetch Linked Profiles if IDs exist
+          let ayurvedicDoc = null;
+          let medicinalDoc = null;
+          
+          const profilePromises = [];
+          if (plantRes.ayurvedicProperties && typeof plantRes.ayurvedicProperties === 'string') {
+              profilePromises.push(plantService.getAyurvedicProperties(plantRes.ayurvedicProperties).then(res => ayurvedicDoc = res));
+          } else if (plantRes.ayurvedicProperties && typeof plantRes.ayurvedicProperties === 'object') {
+              ayurvedicDoc = plantRes.ayurvedicProperties;
+          }
 
-        // Map Database Fields to UI Structure
-        const mappedPlant = {
-            id: plantDoc.$id,
-            commonName: (plantDoc.common_names && plantDoc.common_names.length > 0) ? plantDoc.common_names.join(", ") : plantDoc.name,
-            scientificName: plantDoc.scientific_name || plantDoc.species || "Unknown Scientific Name",
-            tags: visibleTags,
-            overview: plantDoc.description || "No overview available.",
-            introduction: {
-                description: plantDoc.botanical_description || plantDoc.description || "Botanical description not available.",
-                keyBioactives: plantDoc.chemical_constituents || ["Tannins", "Flavonoids"], // Fallback or fetch from relation
-            },
-            partsUsed: plantDoc.medicinal_uses ? plantDoc.medicinal_uses.map(use => ({
-                part: "Whole Plant", // Schema might vary, checking simpler mapping first
+          if (plantRes.medicinalProfiles && typeof plantRes.medicinalProfiles === 'string') {
+              profilePromises.push(plantService.getMedicinalProfile(plantRes.medicinalProfiles).then(res => medicinalDoc = res));
+          } else if (plantRes.medicinalProfiles && typeof plantRes.medicinalProfiles === 'object') {
+              medicinalDoc = plantRes.medicinalProfiles;
+          }
+
+          let habitatDoc = null;
+          if (plantRes.habitat && typeof plantRes.habitat === 'string') {
+              profilePromises.push(plantService.getHabitat(plantRes.habitat).then(res => habitatDoc = res));
+          } else if (plantRes.habitat && typeof plantRes.habitat === 'object') {
+              habitatDoc = plantRes.habitat;
+          }
+
+          await Promise.all(profilePromises);
+
+          // Create Parts Lookup Map (ID -> Name)
+          const partsLookup = {};
+          if (allPartsRes && allPartsRes.documents) {
+              allPartsRes.documents.forEach(p => {
+                  partsLookup[p.$id] = p.name;
+              });
+          }
+
+          // Process Parts (DEBUG)
+          let processedParts = [];
+          if (partsRes && partsRes.documents.length > 0) {
+            console.log("Images for matching:", images); // DEBUG
+            processedParts = partsRes.documents.map(doc => {
+              // Get Part ID
+              // doc.plantParts might be an object (if expanded) or string (if not)
+              let partId = null;
+              let partName = "Unknown Part";
+
+              if (doc.plantParts) {
+                  if (typeof doc.plantParts === 'object') {
+                      partId = doc.plantParts.$id;
+                      partName = doc.plantParts.name || partsLookup[partId] || "Unknown Part";
+                  } else if (typeof doc.plantParts === 'string') {
+                      partId = doc.plantParts;
+                      partName = partsLookup[partId] || "Unknown Part";
+                  }
+              }
+
+              // Match image where shot_part matches the Part ID
+              const matchingImage = images.find(img => {
+                  const imgPartId = img.shot_part?.$id || img.shot_part;
+                  return imgPartId === partId;
+              });
+
+              // FIX: Only show matched image or skip if not found
+              const partImage = matchingImage?.url || null;
+              
+              return {
+                 id: doc.$id, 
+                 part: partName,
+                 uses: doc.indication || doc.notes || "Medicinal use.",
+                 preparation: doc.preparation_form || "", 
+                 image: partImage
+              };
+            });
+          } else {
+             // Fallback if no parts usage data found
+             processedParts = plantRes.medicinal_uses ? plantRes.medicinal_uses.map(use => ({
+                part: "Whole Plant",
                 uses: use,
+                image: coverImage
             })) : [
                 {
                     part: "Leaves",
                     uses: "Traditionally used for various remedies.",
+                    image: coverImage
                 }
-            ],
-            habitat: {
-                nativeRange: plantDoc.origin || "Unknown",
-                climate: "Tropical / Subtropical", // Placeholder if not in doc
-                altitude: "0-2000m",
+            ];
+          }
+
+        // Map Database Fields to UI Structure
+        const mappedPlant = {
+            id: plantRes.$id,
+            commonName: (plantRes.common_names && plantRes.common_names.length > 0) ? plantRes.common_names.join(", ") : plantRes.name,
+            scientificName: plantRes.scientific_name || plantRes.species || "Unknown Scientific Name",
+            tags: visibleTags,
+            overview: plantRes.short_description || plantRes.description || "No overview available.",
+            introduction: {
+                description: plantRes.full_description || plantRes.botanical_description || plantRes.short_description || "Botanical description not available.",
+                keyBioactives: plantRes.chemical_constituents || ["Tannins", "Flavonoids"], // Fallback or fetch from relation
+            },
+            partsUsed: processedParts,
+            habitat: habitatDoc ? {
+                nativeRange: plantRes.origin || "Unknown", // Keep origin separate if needed, or map from doc if available
+                climate: habitatDoc.climate || "Unknown",
+                temperature: (habitatDoc.temperature_min && habitatDoc.temperature_max) ? `${habitatDoc.temperature_min}°C - ${habitatDoc.temperature_max}°C` : "Unknown",
+                soil: habitatDoc.soil_type || "Various",
+                ph: (habitatDoc.soil_ph_min && habitatDoc.soil_ph_max) ? `${habitatDoc.soil_ph_min.toFixed(1)} - ${habitatDoc.soil_ph_max.toFixed(1)}` : "Unknown",
+                light: habitatDoc.light || "Various",
+                rainfall: (habitatDoc.rainfall_min && habitatDoc.rainfall_max) ? `${habitatDoc.rainfall_min}mm - ${habitatDoc.rainfall_max}mm` : "Unknown",
+                ecology: habitatDoc.typical_habitates || "Various",
+            } : {
+                nativeRange: plantRes.origin || "Unknown",
+                climate: "Tropical / Subtropical", 
+                temperature: "15-35°C",
+                soil: "Loamy, Well-drained",
+                ph: "6.0 - 7.5",
+                light: "Full Sun",
+                rainfall: "Moderate",
                 ecology: "Various",
             },
             images: {
                 cover: coverImage,
-                gallery: images.length > 0 ? images : [coverImage],
-                illustration: "https://images.unsplash.com/photo-1598236767471-2dc04aeb9d51?auto=format&fit=crop&q=80&w=600",
-            }
+                gallery: imageUrls.length > 0 ? imageUrls : [coverImage],
+            },
+            ayurvedic: ayurvedicDoc ? {
+                rasa: ayurvedicDoc.rasa || [],
+                virya: ayurvedicDoc.virya || "Unknown",
+                vipaka: ayurvedicDoc.vipaka || "Unknown",
+                dosha: {
+                    vata: ayurvedicDoc.dosha_effect_vata,
+                    pitta: ayurvedicDoc.dosha_effect_pitta,
+                    kapha: ayurvedicDoc.dosha_effect_kapha,
+                },
+                references: ayurvedicDoc.classical_references || []
+            } : null,
+            medicinal: medicinalDoc ? {
+                actions: medicinalDoc.actions || [],
+                systems: medicinalDoc.systems || [],
+                uses: {
+                    traditional: medicinalDoc.traditional_uses,
+                    modern: medicinalDoc.modern_uses
+                }
+            } : null
         };
 
         // Attempt to extract richer data if available in nested objects (if expanded)
-        if(plantDoc.family) {
-             // mappedPlant.family = plantDoc.family.name;
+        if(plantRes.family) {
+             // mappedPlant.family = plantRes.family.name;
         }
         
-        // Mocking parts if simple string array
-        if(plantDoc.parts_used && Array.isArray(plantDoc.parts_used)) {
-             mappedPlant.partsUsed = plantDoc.parts_used.map(part => ({
+        // Mocking parts if simple string array - merge or override if partsUsed is empty/default
+        if(plantRes.parts_used && Array.isArray(plantRes.parts_used) && processedParts.length === 0) {
+             mappedPlant.partsUsed = plantRes.parts_used.map(part => ({
                   part: part,
-                  uses: `Medicinal uses associated with ${part}.`
+                  uses: `Medicinal uses associated with ${part}.`,
+                  image: coverImage
              }));
         }
 
@@ -132,6 +249,7 @@ const PlantDetailsPage = () => {
         if (mappedPlant.partsUsed?.length > 0) {
           setActivePart(mappedPlant.partsUsed[0].part);
         }
+      }
       } catch (error) {
         console.error("Error fetching plant details:", error);
       } finally {
@@ -149,8 +267,6 @@ const PlantDetailsPage = () => {
   const breadcrumbs = useMemo(() => {
     if (!plant) return [];
     return [
-      { label: "Home", href: "/home" },
-      { label: "Explore", href: "/home" },
       { label: plant.commonName }, 
     ];
   }, [plant]);
@@ -274,6 +390,12 @@ const PlantDetailsPage = () => {
                     Overview
                   </a>
                   <a
+                    href="#properties"
+                    className="pl-4 py-2 border-l-2 border-transparent hover:border-primary text-muted-foreground hover:text-primary transition-all text-sm font-medium"
+                  >
+                    Properties
+                  </a>
+                  <a
                     href="#parts"
                     className="pl-4 py-2 border-l-2 border-transparent hover:border-primary text-muted-foreground hover:text-primary transition-all text-sm font-medium"
                   >
@@ -303,7 +425,7 @@ const PlantDetailsPage = () => {
                     <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <span className="block text-xs text-muted-foreground font-bold uppercase">
-                        Origin
+                        Native Range
                       </span>
                       <span className="font-medium">
                         {plant.habitat.nativeRange}
@@ -311,13 +433,24 @@ const PlantDetailsPage = () => {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Thermometer className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <Sun className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                     <div>
                       <span className="block text-xs text-muted-foreground font-bold uppercase">
-                        Climate
+                        Light Req.
                       </span>
                       <span className="font-medium">
-                        {plant.habitat.climate}
+                        {plant.habitat.light}
+                      </span>
+                    </div>
+                  </div>
+                   <div className="flex items-start gap-3">
+                    <Droplets className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <span className="block text-xs text-muted-foreground font-bold uppercase">
+                        Rainfall
+                      </span>
+                      <span className="font-medium">
+                        {plant.habitat.rainfall}
                       </span>
                     </div>
                   </div>
@@ -373,6 +506,139 @@ const PlantDetailsPage = () => {
 
             <Separator />
 
+            {/* Ayurvedic & Medicinal Profiles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 scroll-mt-28" id="properties">
+                {/* Ayurvedic Profile - Themed */}
+                {plant.ayurvedic && (
+                <Card className="overflow-hidden border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="p-6 md:p-8 space-y-6">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="p-2.5 rounded-full bg-primary/10 text-primary">
+                                <Leaf className="h-5 w-5" />
+                            </div>
+                            <h3 className="font-serif font-bold text-2xl text-foreground">Ayurvedic Profile</h3>
+                        </div>
+
+                        {/* Core Triad */}
+                        <div className="grid grid-cols-3 divide-x divide-border py-4 bg-secondary/30 rounded-2xl border border-border/50">
+                            <div className="px-4 text-center space-y-1">
+                                <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Rasa</span>
+                                <div className="text-sm font-medium text-foreground break-words">
+                                    {plant.ayurvedic.rasa.join(", ")}
+                                </div>
+                            </div>
+                            <div className="px-4 text-center space-y-1">
+                                <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Virya</span>
+                                <div className="text-sm font-medium text-foreground">
+                                    {plant.ayurvedic.virya}
+                                </div>
+                            </div>
+                            <div className="px-4 text-center space-y-1">
+                                <span className="text-[10px] font-bold tracking-widest text-muted-foreground uppercase">Vipaka</span>
+                                <div className="text-sm font-medium text-foreground">
+                                    {plant.ayurvedic.vipaka}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Dosha Balance */}
+                        <div>
+                            <span className="text-xs font-bold uppercase text-muted-foreground tracking-wider mb-3 block">Dosha Impact</span>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between text-sm group/item">
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <span className="w-2 h-2 rounded-full bg-foreground/20" /> Vata
+                                    </div>
+                                    <span className="font-medium text-foreground">{plant.ayurvedic.dosha.vata || "Neutral"}</span>
+                                </div>
+                                <Separator />
+                                <div className="flex items-center justify-between text-sm group/item">
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <span className="w-2 h-2 rounded-full bg-foreground/20" /> Pitta
+                                    </div>
+                                    <span className="font-medium text-foreground">{plant.ayurvedic.dosha.pitta || "Neutral"}</span>
+                                </div>
+                                <Separator />
+                                <div className="flex items-center justify-between text-sm group/item">
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <span className="w-2 h-2 rounded-full bg-foreground/20" /> Kapha
+                                    </div>
+                                    <span className="font-medium text-foreground">{plant.ayurvedic.dosha.kapha || "Neutral"}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* References */}
+                        {plant.ayurvedic.references && plant.ayurvedic.references.length > 0 && (
+                             <div className="pt-4 border-t border-border">
+                                <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Classical Texts</p>
+                                <p className="text-xs text-muted-foreground italic font-serif">
+                                    "{plant.ayurvedic.references.join(", ")}"
+                                </p>
+                             </div>
+                        )}
+                    </div>
+                </Card>
+                )}
+
+                {/* Medicinal Profile - Themed */}
+                {plant.medicinal && (
+                <Card className="overflow-hidden border-border/50 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="p-6 md:p-8 space-y-6">
+                        <div className="flex items-center gap-3 mb-2">
+                             <div className="p-2.5 rounded-full bg-primary/10 text-primary">
+                                <FlaskConical className="h-5 w-5" />
+                             </div>
+                            <h3 className="font-serif font-bold text-2xl text-foreground">Medicinal Profile</h3>
+                        </div>
+
+                         {/* Actions & Systems Tags */}
+                        <div className="space-y-4">
+                             <div>
+                                 <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider block mb-2">Therapeutic Actions</span>
+                                 <div className="flex flex-wrap gap-2">
+                                     {plant.medicinal.actions.slice(0, 8).map(a => (
+                                         <Badge key={a} variant="secondary" className="bg-secondary/50 hover:bg-secondary text-secondary-foreground border-transparent font-normal">
+                                             {a}
+                                         </Badge>
+                                     ))}
+                                 </div>
+                            </div>
+                             <div>
+                                 <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider block mb-2">Target Systems</span>
+                                 <div className="flex flex-wrap gap-2">
+                                     {plant.medicinal.systems.map(s => (
+                                          <span key={s} className="text-xs font-medium text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-md border border-border/50">
+                                            {s}
+                                          </span>
+                                     ))}
+                                 </div>
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        <div className="grid grid-cols-1 gap-4">
+                             <div className="bg-secondary/20 p-4 rounded-xl border border-border/50">
+                                 <span className="text-[10px] font-bold uppercase text-muted-foreground block mb-1">Traditional Uses</span>
+                                 <p className="text-sm text-foreground/80 leading-relaxed">
+                                    {plant.medicinal.uses.traditional}
+                                 </p>
+                             </div>
+                             <div className="bg-secondary/20 p-4 rounded-xl border border-border/50">
+                                 <span className="text-[10px] font-bold uppercase text-muted-foreground block mb-1">Modern Applications</span>
+                                 <p className="text-sm text-foreground/80 leading-relaxed">
+                                    {plant.medicinal.uses.modern}
+                                 </p>
+                             </div>
+                        </div>
+                    </div>
+                </Card>
+                )}
+            </div>
+            
+            <Separator /> 
+
             {/* Medicinal Parts Tabs */}
             <section id="parts" className="scroll-mt-28">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -388,15 +654,19 @@ const PlantDetailsPage = () => {
 
               {plant.partsUsed.length > 0 ? (
               <Tabs
-                defaultValue={plant.partsUsed[0]?.part}
-                onValueChange={setActivePart}
+                defaultValue={plant.partsUsed[0]?.id || plant.partsUsed[0]?.part} // Use ID if available
+                onValueChange={(val) => {
+                     // Find part by ID first, then name
+                     const p = plant.partsUsed.find(p => p.id === val) || plant.partsUsed.find(p => p.part === val);
+                     if(p) setActivePart(p.part);
+                }}
                 className="w-full"
               >
                 <TabsList className="w-full justify-start h-auto p-1 bg-muted/30 rounded-xl mb-8 overflow-x-auto flex-nowrap scrollbar-hide">
                   {plant.partsUsed.map((part) => (
                     <TabsTrigger
-                      key={part.part}
-                      value={part.part}
+                      key={part.id || part.part} // Use unique ID
+                      value={part.id || part.part}
                       className="rounded-lg py-2.5 px-6 text-sm font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all"
                     >
                       {part.part}
@@ -406,24 +676,22 @@ const PlantDetailsPage = () => {
 
                 {plant.partsUsed.map((part, index) => (
                   <TabsContent
-                    key={part.part}
-                    value={part.part}
+                    key={part.id || part.part}
+                    value={part.id || part.part}
                     className="animate-in fade-in slide-in-from-bottom-2 duration-300"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ring-1 ring-border rounded-3xl p-6 md:p-8 bg-card shadow-sm">
-                      {/* Visual */}
+                      {/* Visual - Only render if image exists */}
+                      {part.image && (
                       <div className="aspect-square rounded-2xl overflow-hidden shadow-inner bg-secondary/20 relative group">
                         <img
-                          src={
-                            plant.images.gallery[
-                              index % plant.images.gallery.length
-                            ]
-                          }
+                          src={part.image}
                           alt={part.part}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl" />
                       </div>
+                      )}
 
                       {/* Details */}
                       <div className="space-y-6">
@@ -476,55 +744,85 @@ const PlantDetailsPage = () => {
               <h2 className="text-3xl font-serif font-bold mb-8">
                 Habitat & Ecology
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  {
-                    icon: MapPin,
-                    label: "Range",
-                    val: plant.habitat.nativeRange,
-                    color: "text-red-500",
-                    bg: "bg-red-50 dark:bg-red-950/20",
-                  },
-                  {
-                    icon: Sun,
-                    label: "Climate",
-                    val: plant.habitat.climate,
-                    color: "text-amber-500",
-                    bg: "bg-amber-50 dark:bg-amber-950/20",
-                  },
-                  {
-                    icon: Mountain,
-                    label: "Altitude",
-                    val: plant.habitat.altitude,
-                    color: "text-indigo-500",
-                    bg: "bg-indigo-50 dark:bg-indigo-950/20",
-                  },
-                  {
-                    icon: Wind,
-                    label: "Ecology",
-                    val: plant.habitat.ecology,
-                    color: "text-emerald-500",
-                    bg: "bg-emerald-50 dark:bg-emerald-950/20",
-                  },
-                ].map((item, idx) => (
-                  <Card
-                    key={idx}
-                    className={cn(
-                      "p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default",
-                      item.bg
-                    )}
-                  >
-                    <item.icon className={cn("h-8 w-8 mx-auto", item.color)} />
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {/* Climate Card */}
+                <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-amber-50 dark:bg-amber-950/20">
+                    <Sun className="h-8 w-8 mx-auto text-amber-500" />
                     <div>
                       <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
-                        {item.label}
+                        Climate
                       </h4>
                       <p className="font-semibold text-sm md:text-base leading-tight">
-                        {item.val}
+                        {plant.habitat.climate}
                       </p>
                     </div>
-                  </Card>
-                ))}
+                </Card>
+
+                 {/* Temperature Card */}
+                 <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-red-50 dark:bg-red-950/20">
+                    <Thermometer className="h-8 w-8 mx-auto text-red-500" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
+                        Temperature
+                      </h4>
+                      <p className="font-semibold text-sm md:text-base leading-tight">
+                        {plant.habitat.temperature}
+                      </p>
+                    </div>
+                </Card>
+
+                 {/* Soil Card */}
+                 <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-stone-50 dark:bg-stone-950/30">
+                    <Layers className="h-8 w-8 mx-auto text-stone-500" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
+                         Soil Type
+                      </h4>
+                      <p className="font-semibold text-sm md:text-base leading-tight">
+                        {plant.habitat.soil}
+                      </p>
+                       <p className="text-xs text-muted-foreground mt-1">pH: {plant.habitat.ph}</p>
+                    </div>
+                </Card>
+
+                {/* Light Card */}
+                 <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-yellow-50 dark:bg-yellow-950/20">
+                    <SunMedium className="h-8 w-8 mx-auto text-yellow-500" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
+                        Light
+                      </h4>
+                      <p className="font-semibold text-sm md:text-base leading-tight">
+                        {plant.habitat.light}
+                      </p>
+                    </div>
+                </Card>
+                
+                 {/* Rainfall Card */}
+                 <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-blue-50 dark:bg-blue-950/20">
+                    <CloudRain className="h-8 w-8 mx-auto text-blue-500" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
+                        Annual Rainfall
+                      </h4>
+                      <p className="font-semibold text-sm md:text-base leading-tight">
+                        {plant.habitat.rainfall}
+                      </p>
+                    </div>
+                </Card>
+
+                 {/* Ecology Card */}
+                 <Card className="p-6 border-0 text-center space-y-3 hover:scale-105 transition-transform cursor-default bg-emerald-50 dark:bg-emerald-950/20 col-span-2 md:col-span-1 lg:col-span-2">
+                    <Wind className="h-8 w-8 mx-auto text-emerald-500" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase text-muted-foreground/70 mb-1">
+                        Typical Habitats
+                      </h4>
+                      <p className="font-semibold text-sm md:text-base leading-tight">
+                        {plant.habitat.ecology}
+                      </p>
+                    </div>
+                </Card>
               </div>
             </section>
 
@@ -547,16 +845,6 @@ const PlantDetailsPage = () => {
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 ))}
-                <div className="break-inside-avoid rounded-2xl overflow-hidden shadow-sm border bg-white dark:bg-black p-6 flex flex-col items-center justify-center text-center">
-                  <img
-                    src={plant.images.illustration}
-                    alt="Illustration"
-                    className="w-full object-contain mix-blend-multiply dark:mix-blend-screen opacity-90 mb-4"
-                  />
-                  <Badge variant="outline" className="text-xs">
-                    Botanical Illustration
-                  </Badge>
-                </div>
               </div>
             </section>
           </div>

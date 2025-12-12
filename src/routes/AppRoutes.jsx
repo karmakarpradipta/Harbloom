@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -26,6 +26,16 @@ import DataEntryGuide from "@/pages/admin/DataEntryGuide";
 import PlantParts from "@/pages/admin/data/PlantParts";
 import CultivationProfiles from "@/pages/admin/data/CultivationProfiles";
 import Tags from "@/pages/admin/data/Tags";
+import { ExploreProvider } from "@/context/ExploreContext";
+
+// Layout Wrapper for Explore Context
+const ExploreLayout = () => {
+  return (
+    <ExploreProvider>
+      <Outlet />
+    </ExploreProvider>
+  );
+};
 
 const AppRoutes = () => {
   return (
@@ -33,9 +43,14 @@ const AppRoutes = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/search" element={<SearchPage />} />
-      <Route path="/plant/:id" element={<PlantDetailsPage />} />
+      
+      {/* Routes needing Explore Context */}
+      <Route element={<ExploreLayout />}>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/plant/:id" element={<PlantDetailsPage />} />
+      </Route>
+
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
